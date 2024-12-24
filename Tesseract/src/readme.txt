@@ -1,1 +1,1 @@
-This folder contains development and debug versions UI apps.
+This folder contains development and debug versions libraries UI apps.
