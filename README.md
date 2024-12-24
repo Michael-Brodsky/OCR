@@ -32,8 +32,13 @@ monitors in a multiple-monitor setup. This however is only a "visual" improvemen
 and Adobe continually get the focus, including the mousepointer, and users are still not 
 able to perform any other tasks while the process runs.
 
-Currently, the libraries and UI applications have only been tested on Windows 10 and 11, 64
-bit implementations. The UI apps require that a setup procedure be run prior to use. The
+Currently, the libraries and applications have only been tested on Windows 10 and 11, 64
+bit implementations. The apps require that a setup procedure be run prior to use. The
 setup checks for and installs any dependencies, creates a simple file system and configures 
-the app to run in host computer's environment. The UI apps also come with sample source 
-files and a demo program that reads and catalogs them.
+the app to run in host computer's environment. The apps also come with sample source files 
+and a demo program that reads and catalogs them.
+
+Any database server that MS Access is able to establish an ODBC connection with can be 
+used for back end data storage, including other Access databases, SQL Server, Azure and
+dBase. The demo program includes a simple local table that illustrates how files are 
+cataloged and a form to view and manage the catalog.
