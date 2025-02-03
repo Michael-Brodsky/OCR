@@ -302,12 +302,12 @@ Public Sub ShrinkToFit()
     Container.ShrinkToFit
 End Sub
 
-Public Function Size() As Long
+Public Property Get Size() As Long
     '
-    ' Returns the vector size in elements.
+    ' Returns the stack size in elements.
     '
     Size = Container.Size
-End Function
+End Property
 
 Public Sub Swap( _
     ByRef aOther As VectorT _
