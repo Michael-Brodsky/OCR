@@ -205,8 +205,8 @@ Public Sub Fill( _
     Optional ByVal aCount As Long = 1 _
 )
     '
-    ' Assigns the given value to count elements beginning
-    ' at position. No type or bounds checking is performed.
+    ' Assigns the given aValue to aCount elements begining
+    ' at aPosition. No type or bounds checking is performed.
     '
     Dim it As Long
     
@@ -238,7 +238,7 @@ Public Property Let Front( _
     ByVal aValue As Variant _
 )
     '
-    ' Assigns the given value to the first element.
+    ' Assigns the given aValue to the first element.
     ' No type checking is performed.
     ' If the container is empty an error occurs.
     '
@@ -249,7 +249,7 @@ Public Property Set Front( _
     ByVal aValue As Variant _
 )
     '
-    ' Assigns the given value to the first element.
+    ' Assigns the given aValue to the first element.
     ' No type checking is performed.
     ' If the container is empty an error occurs.
     '
@@ -366,11 +366,11 @@ Public Function Remove( _
     '
     If aPosition < Size Then
         If aCount > 0 Then
-            Dim i As Long, First As Long, last As Long
+            Dim i As Long, first As Long, last As Long
             
-            First = aPosition + aCount
+            first = aPosition + aCount
             last = Size - 1
-            For i = First To last - 1
+            For i = first To last - 1
                 If IsObject(Allocator.Data(i + aCount)) Then
                     Set Allocator.Data(i) = Allocator.Data(i + aCount)
                 Else
