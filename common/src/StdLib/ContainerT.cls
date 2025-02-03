@@ -325,21 +325,6 @@ Public Function PopBack() As Variant
     Allocator.Data(Size) = Empty
 End Function
 
-Public Function PopFront() As Variant
-    '
-    ' Removes and returns the first element.
-    ' No type checking is performed. Decreases Size by one.
-    ' An error occurs if the container is empty.
-    '
-    Size = Size - 1
-    If IsObject(Allocator.Data(Size)) Then
-        'Set PopBack = Allocator.Data(Size)
-    Else
-        'PopBack = Allocator.Data(Size)
-    End If
-    Allocator.Data(Size) = Empty
-End Function
-
 Public Sub PushBack( _
     aValue As Variant _
 )
@@ -362,7 +347,7 @@ End Sub
 
 Public Function Remove( _
     ByVal aPosition As Long, _
-    Optional aCount As Long = 1 _
+    Optional ByVal aCount As Long = 1 _
 ) As Long
     '
     ' Removes aCount elements begining at aPosition.
@@ -426,7 +411,7 @@ End Sub
 
 Public Sub ShrinkToFit()
     '
-    ' Reduces the container capacity to the current Size in elements.
+    ' Reduces the container Capacity to its current Size.
     '
     Allocator.Resize Size
 End Sub
