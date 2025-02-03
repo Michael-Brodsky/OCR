@@ -17,7 +17,7 @@ Attribute VB_Name = "basLibWin"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' None                                                      '
+' (None)                                                    '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -602,10 +602,6 @@ End Function
 Public Function WindowHasPopup( _
     ByVal aHwnd As LongPtr _
 ) As Boolean
-    '
-    ' Returns TRUE if a window has any child popup windows,
-    ' else returns FALSE.
-    '
     Dim child As LongPtr
     
     child = GetWindow(aHwnd, GW_CHILD)  'Find Child

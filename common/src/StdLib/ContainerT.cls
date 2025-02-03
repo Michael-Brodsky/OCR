@@ -67,7 +67,7 @@ Public Property Get At( _
     ByVal aIndex As Long _
 ) As Variant
     '
-    ' Returns the element at the given index.
+    ' Returns the element at aIndex.
     ' No type or bounds checking is performed.
     '
     If IsObject(Allocator.Data(aIndex)) Then
@@ -79,10 +79,10 @@ End Property
 
 Public Property Let At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns a value to the element at the given index.
+    ' Assigns aValue to the element at aIndex.
     ' No type or bounds checking is performed.
     '
     Allocator.Data(aIndex) = aValue
@@ -90,10 +90,10 @@ End Property
 
 Public Property Set At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns a value to the element at the given index.
+    ' Assigns aValue to the element at aIndex.
     ' No type or bounds checking is performed.
     '
     Set Allocator.Data(aIndex) = aValue
@@ -103,7 +103,7 @@ Public Property Get Back() As Variant
     '
     ' Returns the last element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     If IsObject(Allocator.Data(Size - 1)) Then
         Set Back = Allocator.Data(Size - 1)
@@ -113,23 +113,23 @@ Public Property Get Back() As Variant
 End Property
 
 Public Property Let Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given value to the last element.
+    ' Assigns aValue to the last element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     Allocator.Data(Size - 1) = aValue
 End Property
 
 Public Property Set Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given value to the last element.
+    ' Assigns aValue to the last element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     Set Allocator.Data(Size - 1) = aValue
 End Property
@@ -154,7 +154,7 @@ End Sub
 
 Public Function Clone() As ContainerT
     '
-    ' Returns a deep copy of the container contents.
+    ' Returns a deep copy of the container.
     '
     Dim c As New ContainerT
     
@@ -179,7 +179,7 @@ Public Property Let Data( _
     aData As Variant _
 )
     '
-    ' Assigns the given data to the underlying storage container.
+    ' Assigns aData to the underlying storage container.
     ' Sets Size and Capacity to the number of elements assigned.
     ' No type checking is performed.
     '
@@ -191,7 +191,7 @@ Public Property Set Data( _
     aData As Variant _
 )
     '
-    ' Assigns the given data to the underlying storage container.
+    ' Assigns aData to the underlying storage container.
     ' Sets Size and Capacity to the number of elements assigned.
     ' No type checking is performed.
     '
@@ -205,11 +205,13 @@ Public Sub Fill( _
     Optional ByVal aCount As Long = 1 _
 )
     '
-    ' Assigns the given aValue to aCount elements begining
-    ' at aPosition. No type or bounds checking is performed.
+    ' Assigns aValue to aCount elements begining at aPosition.
+    ' No type or bounds checking is performed.
     '
     Dim it As Long
     
+    MakeUnsigned aPosition
+    MakeUnsigned aCount
     For it = aPosition To aPosition + aCount - 1
         If Not IsMissing(aValue) Then
             If IsObject(aValue) Then
@@ -225,7 +227,7 @@ Public Property Get Front() As Variant
     '
     ' Returns the first element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     If IsObject(Allocator.Data(0)) Then
         Set Front = Allocator.Data(0)
@@ -235,23 +237,23 @@ Public Property Get Front() As Variant
 End Property
 
 Public Property Let Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     Allocator.Data(0) = aValue
 End Property
 
 Public Property Set Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     ' No type checking is performed.
-    ' If the container is empty an error occurs.
+    ' An error occurs if the container is empty.
     '
     Set Allocator.Data(0) = aValue
 End Property
@@ -262,12 +264,14 @@ Public Function Insert( _
     Optional ByVal aCount As Long = 1 _
 ) As Long
     '
-    ' Inserts aCount elements with the given aValue begining
-    ' at aPosition. No type checking is performed. Increases
-    ' Size by count. If the new Size is greater than the old
-    ' Capacity, a reallocation occurs. Inserting past the
-    ' end results in an error.
+    ' Inserts aCount elements of aValue begining at aPosition.
+    ' No type checking is performed. Increases Size by aCount.
+    ' If the new Size is greater than the old Capacity, a
+    ' reallocation occurs. An error occurs if aPosition past
+    ' the end.
     '
+    MakeUnsigned aPosition
+    MakeUnsigned aCount
     If aPosition < Size Then
         Dim i As Long
     
@@ -286,7 +290,7 @@ Public Function Insert( _
         Fill aPosition, aValue, aCount
         Insert = aPosition
     Else
-        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.name, "Position out of bounds"
+        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.Name, "Position out of bounds"
     End If
 End Function
 
@@ -310,7 +314,7 @@ Public Function PopBack() As Variant
     '
     ' Removes and returns the last element.
     ' No type checking is performed. Decreases Size by one.
-    ' Results in an error if the container is unallocated.
+    ' An error occurs if the container is empty.
     '
     Size = Size - 1
     If IsObject(Allocator.Data(Size)) Then
@@ -323,9 +327,9 @@ End Function
 
 Public Function PopFront() As Variant
     '
-    ' Removes and returns the last element.
+    ' Removes and returns the first element.
     ' No type checking is performed. Decreases Size by one.
-    ' Results in an error if the container is unallocated.
+    ' An error occurs if the container is empty.
     '
     Size = Size - 1
     If IsObject(Allocator.Data(Size)) Then
@@ -335,14 +339,15 @@ Public Function PopFront() As Variant
     End If
     Allocator.Data(Size) = Empty
 End Function
+
 Public Sub PushBack( _
     aValue As Variant _
 )
     '
-    ' Appends an element with the given value after the last
-    ' element. No type checking is performed. Increases Size
-    ' by one. If the new Size is greater than the old Capacity,
-    ' a reallocation occurs.
+    ' Appends an element with aValue after the last element.
+    ' No type checking is performed. Increases Size by one.
+    ' If the new Size is greater than the old Capacity, a
+    ' reallocation occurs.
     '
     Allocator.Allocate Size + 1
     If Not IsMissing(aValue) Then
@@ -362,15 +367,17 @@ Public Function Remove( _
     '
     ' Removes aCount elements begining at aPosition.
     ' Decreases Size by aCount. No type checking is performed.
-    ' Removing past the end results in an error.
+    ' An error occurs if aPosition past the end.
     '
+    MakeUnsigned aPosition
+    MakeUnsigned aCount
     If aPosition < Size Then
         If aCount > 0 Then
-            Dim i As Long, first As Long, last As Long
+            Dim i As Long, First As Long, last As Long
             
-            first = aPosition + aCount
+            First = aPosition + aCount
             last = Size - 1
-            For i = first To last - 1
+            For i = First To last - 1
                 If IsObject(Allocator.Data(i + aCount)) Then
                     Set Allocator.Data(i) = Allocator.Data(i + aCount)
                 Else
@@ -382,7 +389,7 @@ Public Function Remove( _
         End If
         Remove = aPosition
     Else
-        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.name, "Position out of bounds"
+        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.Name, "Position out of bounds"
     End If
 End Function
 
@@ -431,7 +438,9 @@ Public Property Get Size() As Long
     Size = CSize
 End Property
 
-Private Property Let Size(aSize As Long)
+Private Property Let Size( _
+    ByVal aSize As Long _
+)
     '
     ' Assigns the container Size to aSize elements.
     '

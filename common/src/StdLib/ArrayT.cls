@@ -75,9 +75,8 @@ Public Property Get At( _
     ByVal aIndex As Long _
 ) As Variant
     '
-    ' Returns the element at the given aIndex.
+    ' Returns the element at aIndex.
     '
-    MakeUnsigned aIndex
     If IsObject(Container.At(aIndex)) Then
         Set At = Container.At(aIndex)
     Else
@@ -87,23 +86,21 @@ End Property
 
 Public Property Let At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns aValue to the element at the given aIndex.
+    ' Assigns aValue to the element at aIndex.
     '
-    MakeUnsigned aIndex
     Container.At(aIndex) = aValue
 End Property
 
 Public Property Set At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns aValue to the element at the given aIndex.
+    ' Assigns aValue to the element at aIndex.
     '
-    MakeUnsigned aIndex
     Set Container.At(aIndex) = aValue
 End Property
 
@@ -119,19 +116,19 @@ Public Property Get Back() As Variant
 End Property
 
 Public Property Let Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the last element.
+    ' Assigns aValue to the last element.
     '
     Container.Back = aValue
 End Property
 
 Public Property Set Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the last element.
+    ' Assigns aValue to the last element.
     '
     Set Container.Back = aValue
 End Property
@@ -162,7 +159,7 @@ Public Sub Fill( _
     aValue As Variant _
 )
     '
-    ' Assigns the given aValue to all elements.
+    ' Assigns aValue to all elements.
     '
     Container.Fill 0, aValue, Size
 End Sub
@@ -171,7 +168,7 @@ Public Property Get Front() As Variant
     '
     ' Returns the first element.
     '
-    If IsObject(ArrayFront(Container.Data)) Then
+    If IsObject(Container.Front) Then
         Set Front = Container.Front
     Else
         Front = Container.Front
@@ -179,19 +176,19 @@ Public Property Get Front() As Variant
 End Property
 
 Public Property Let Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     '
     Container.Front = aValue
 End Property
 
 Public Property Set Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     '
     Set Container.Front = aValue
 End Property
@@ -200,7 +197,7 @@ Public Sub InitList( _
     aValues As Variant _
 )
     '
-    ' Initializes the array with the given values.
+    ' Initializes the array with the given aValues.
     '
     Dim i As Long
     
@@ -243,7 +240,7 @@ Public Property Let Size( _
     If Not initialized Then
         Container.Resize aSize
     Else
-        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.name, kStrArrayAlreadyDimensioned
+        Err.Raise kvbErrInvalidProcedureCall, CurrentProject.Name, kStrArrayAlreadyDimensioned
     End If
     initialized = True
 End Property

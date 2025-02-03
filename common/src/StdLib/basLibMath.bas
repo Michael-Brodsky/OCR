@@ -259,8 +259,7 @@ Public Function Quadratic( _
     ByVal c As Double _
 ) As PairT
     '
-    ' Returns the roots of a quadratic function, with coefficients
-    ' a, b and c, as a pair of complex numbers.
+    ' Returns the roots of a quadratic function as a pair of complex numbers.
     '
     Dim disc As Double, num As ComplexT, denom As Double, root1 As ComplexT, root2 As ComplexT, result As PairT
     
@@ -312,7 +311,7 @@ Public Function Sqrt( _
     ByVal x As Double _
 ) As ComplexT
     '
-    ' Returns the square root of any number as a complex number.
+    ' Returns the square root of x as a complex number.
     '
     Dim result As ComplexT
     

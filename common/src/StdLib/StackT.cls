@@ -6,7 +6,7 @@ Attribute VB_Name = "StackT"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
 ' StackT                                                    '
@@ -83,7 +83,7 @@ Public Sub Push( _
     aValue As Variant _
 )
     '
-    ' Adds an element with the given aValue to the top of the stack.
+    ' Adds an element with aValue to the top of the stack.
     '
     Container.PushBack aValue
 End Sub

@@ -27,7 +27,7 @@ Option Compare Binary
 Option Explicit
 
 Public Function NewAllocatorT( _
-    Optional aSize As Long = 0 _
+    Optional ByVal aSize As Long = 0 _
 ) As AllocatorT
     Dim alloc As New AllocatorT
     
@@ -60,9 +60,9 @@ Public Function NewArrayT( _
 End Function
 
 Public Function NewCallbackT( _
-    Optional aProcedure As String, _
-    Optional aMethod As VbCallType, _
-    Optional aTarget As Variant = Nothing _
+    Optional ByVal aProcedure As String, _
+    Optional ByVal aMethod As VbCallType, _
+    Optional aTarget As Object = Nothing _
 ) As CallbackT
     Dim obj As New CallbackT
     
@@ -135,9 +135,12 @@ Public Function NewShell() As Object
     Set NewShell = CreateObject("WScript.Shell")
 End Function
 
-Public Function NewStackT() As StackT
+Public Function NewStackT( _
+    Optional aData As Variant _
+) As StackT
     Dim obj As New StackT
     
+    'obj.Data = aData
     Set NewStackT = obj
     Set obj = Nothing
 End Function

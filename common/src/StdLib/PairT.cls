@@ -22,7 +22,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' None                                                      '
+' (None)                                                    '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -34,12 +34,16 @@ Attribute VB_Exposed = True
 Option Compare Database
 Option Explicit
 
+''''''''''''''''''
+' Public Members '
+''''''''''''''''''
+
 Public First As Variant
 Public Second As Variant
 
 Public Property Get ToArray() As Variant
     '
-    ' Returns first and second as a two-element array.
+    ' Returns First and Second as a two-element array.
     '
     Dim a(1) As Variant
     
@@ -73,7 +77,7 @@ Public Sub InitList( _
     aSecond As Variant _
 )
     '
-    ' Initializes the pair with the given values.
+    ' Initializes the pair with the given arguments.
     '
     If IsObject(aFirst) Then
         Set First = aFirst

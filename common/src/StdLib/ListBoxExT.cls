@@ -46,7 +46,12 @@ Attribute VB_Exposed = True
 Option Compare Binary
 Option Explicit
 
-' Enumerates valid values for the button shift mask in mouse and key event handlers.
+'''''''''''''''''''''''
+' Types and Constants '
+'''''''''''''''''''''''
+
+' Enumerates valid values for the button shift mask in mouse
+' and key event handlers.
 Public Enum ButtonShiftMask
     bsmShift = 1
     bsmCtrl = 2
@@ -60,9 +65,17 @@ Public Enum ListMultiSelect
     lmsExtended = 2
 End Enum
 
+'''''''''''''''''''
+' Private Members '
+'''''''''''''''''''
+
 Private WithEvents ListBoxEx As ListBox ' Client control.
 Attribute ListBoxEx.VB_VarHelpID = -1
-Private itemSelected() As Boolean       ' Lists the current selection status of each ListItem.
+Private itemSelected() As Boolean       ' Current selection status of each client ListItem.
+
+''''''''''''''''''''
+' Public Interface '
+''''''''''''''''''''
 
 Public Property Set Control( _
     aListBox As ListBox _
@@ -77,9 +90,9 @@ Public Property Get Selected( _
     Optional ByVal aNext As Variant _
 ) As Variant
     '
-    ' Returns a list of selected items each with a list
-    ' of column values, or Empty if no ListItems are
-    ' selected.
+    ' Returns a list of selected client ListItems each
+    ' with a list of column values, or Empty, if no
+    ' ListItems are selected.
     '
     Dim i As Integer, j As Integer, items As Variant
     
@@ -97,19 +110,23 @@ Public Property Get Selected( _
     Selected = items
 End Property
 
-Private Sub ListBoxEx_BeforeUpdate(Cancel As Integer)
+Private Sub ListBoxEx_BeforeUpdate( _
+    Cancel As Integer _
+)
     '
-    ' Restores any selected ListItems that may have been
-    ' unselected by a superceding event.
+    ' Restores any selected client ListItems that may
+    ' have been unselected by a superceding event.
     '
     While ArraySize(itemSelected) > 0
         ListBoxEx.Selected(ArraySize(itemSelected) - 1) = ArrayPopFront(itemSelected)
     Wend
 End Sub
 
-Private Sub ListBoxEx_Exit(Cancel As Integer)
+Private Sub ListBoxEx_Exit( _
+    Cancel As Integer _
+)
     '
-    ' Deselect all items in the list.
+    ' Deselect all client ListItems.
     '
     Dim i As Integer
     
@@ -118,7 +135,12 @@ Private Sub ListBoxEx_Exit(Cancel As Integer)
     Next
 End Sub
 
-Private Sub ListBoxEx_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ListBoxEx_MouseDown( _
+    Button As Integer, _
+    Shift As Integer, _
+    x As Single, _
+    y As Single _
+)
     '
     ' Takes an action according the the button clicked and shift mask.
     '
@@ -135,7 +157,7 @@ End Sub
 
 Private Function MultiSelect() As Boolean
     '
-    ' Returns TRUE if the listbox is multi-select enabled,
+    ' Returns TRUE if the client is multi-select enabled,
     ' else returns FALSE.
     '
     MultiSelect = (ListBoxEx.MultiSelect <> lmsNone)
@@ -143,7 +165,7 @@ End Function
 
 Private Sub SaveSelected()
     '
-    ' Saves all currently selected ListBox items.
+    ' Saves all currently selected client ListItems.
     '
     Dim i As Integer
     

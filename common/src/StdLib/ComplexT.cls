@@ -6,7 +6,7 @@ Attribute VB_Name = "ComplexT"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
 ' ComplexT                                                  '
@@ -18,8 +18,8 @@ Attribute VB_Exposed = False
 '                                                           '
 ' DESCRIPTION                                               '
 '                                                           '
-' This module defines an aggregate type that holds complex  '
-' numbers.                                                  '
+' This module defines an aggregate type that holds a        '
+' complex number.                                           '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
@@ -35,8 +35,12 @@ Attribute VB_Exposed = False
 Option Compare Binary
 Option Explicit
 
-Public Real As Double
-Public Imag As Double
+''''''''''''''''''
+' Public Members '
+''''''''''''''''''
+
+Public Real As Double   ' The real part.
+Public Imag As Double   ' The imaginary part.
 
 Public Function Clone() As ComplexT
     '
@@ -54,14 +58,17 @@ Public Sub InitList( _
     ByVal aReal As Double, _
     ByVal aImag As Double _
 )
+    '
+    ' Initializes a complex number with the given arguments.
+    '
     Real = aReal
     Imag = aImag
 End Sub
 
 Public Property Get RValue() As Double
     '
-    ' Returns the imaginary part if it's non-zero
-    ' or the real part.
+    ' Returns the imaginary part if it's non-zero,
+    ' else returns the real part.
     '
     RValue = IIf(Imag <> 0, Imag, Real)
 End Property
@@ -70,7 +77,7 @@ Public Sub Swap( _
     ByRef aOther As ComplexT _
 )
     '
-    ' Exchanges the complex number contents with that of another.
+    ' Exchanges a complex number with another.
     '
     Dim tmp As Double
     

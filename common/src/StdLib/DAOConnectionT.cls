@@ -23,7 +23,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' None                                                      '
+' (None)                                                    '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -35,7 +35,15 @@ Attribute VB_Exposed = True
 Option Compare Database
 Option Explicit
 
-Private cnstr As String     ' The current connection string.
+'''''''''''''''''''
+' Private Members '
+'''''''''''''''''''
+
+Private CString As String   ' The current connection string.
+
+''''''''''''''''''''
+' Public Interface '
+''''''''''''''''''''
 
 Public Property Get Application() As String
     Application = GetOption("APP")
@@ -48,12 +56,14 @@ Public Property Let Application( _
 End Property
 
 Public Property Get Connect() As Variant
-    Connect = cnstr
+    Connect = CString
 End Property
 
-Public Property Let Connect(aConnect As Variant)
-    If Nz(aConnect) = "" Then aConnect = CurrentDb.name
-    cnstr = IIf(PathGetType(aConnect) = ptFile, "Microsoft Access;DATABASE=" & aConnect, aConnect)
+Public Property Let Connect( _
+    ByVal aConnect As Variant _
+)
+    If Nz(aConnect) = "" Then aConnect = CurrentDb.Name
+    CString = IIf(PathGetType(aConnect) = ptFile, "Microsoft Access;DATABASE=" & aConnect, aConnect)
 End Property
 
 Public Property Get Database() As String
@@ -106,11 +116,11 @@ Public Property Let Server( _
     SetOption "SERVER", aServer
 End Property
 
-Public Property Get name() As String
-    name = GetOption("")
+Public Property Get Name() As String
+    Name = GetOption("")
 End Property
 
-Public Property Let name( _
+Public Property Let Name( _
     ByVal aName As String _
 )
     SetOption "", aName
@@ -158,13 +168,13 @@ Private Function GetOption( _
     Optional ByVal aString As Variant _
 ) As Variant
     '
-    ' Returns the value of the given option from the current
+    ' Returns the value of aOption from the current
     ' connection string, if any.
     '
     Dim items() As String, item As Variant
     
     If aOption <> "" Then aOption = aOption & "="
-    items = Split(IIf(Not IsMissing(aString), aString, cnstr), ";")
+    items = Split(IIf(Not IsMissing(aString), aString, CString), ";")
     For Each item In items
         If IsMatch(aOption, item) Then
             Dim keyval() As String
@@ -189,12 +199,12 @@ Private Sub SetOption( _
     
     If aOption <> "" Then aOption = aOption & "="
     keyval = aOption & aValue
-    items = Split(cnstr, ";")
+    items = Split(CString, ";")
     For Each item In items
         If IsMatch(aOption, item) Then
-            cnstr = Replace(cnstr, item, IIf(aValue = "", "", keyval))
+            CString = Replace(CString, item, IIf(aValue = "", "", keyval))
             Exit Sub
         End If
     Next
-    cnstr = cnstr & IIf(aValue = "", "", keyval & ";")
+    CString = CString & IIf(aValue = "", "", keyval & ";")
 End Sub

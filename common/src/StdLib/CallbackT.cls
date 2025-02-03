@@ -24,7 +24,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibVBA                                                    '
+' LibArray                                                  '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -36,17 +36,21 @@ Attribute VB_Exposed = True
 Option Compare Database
 Option Explicit
 
-Public Target As Object
-Public Procedure As String
-Public Method As VbCallType
+''''''''''''''''''
+' Public Members '
+''''''''''''''''''
+
+Public Target As Object     ' The object, if any, the call procedure is defined in.
+Public Procedure As String  ' The name of the procedure to call.
+Public Method As VbCallType ' VBA call method.
 
 Public Sub Init( _
-    aProcedure As String, _
-    aMethod As VbCallType, _
-    Optional aTarget As Variant = Nothing _
+    ByVal aProcedure As String, _
+    ByVal aMethod As VbCallType, _
+    Optional aTarget As Object = Nothing _
 )
     '
-    ' Initializes the callback with the given values.
+    ' Initializes the callback with the given arguments.
     '
     Set Target = aTarget
     Procedure = aProcedure
@@ -57,13 +61,14 @@ Public Function Exec( _
     ParamArray aArgs() As Variant _
 ) As Variant
     '
-    ' Executes the callback with the given parameters. Callback procudures
-    ' must take a single argument of type variant that is passed as an array.
+    ' Executes the callback with the given arguments. Callback procedures
+    ' must take a single argument of type variant that is passed as a
+    ' variant array.
     '
     If Not Target Is Nothing Then
-        Exec = CallByName(Target, Procedure, Method, Array(aArgs)(0))
+        Exec = CallByName(Target, Procedure, Method, ParamArrayDelegate(aArgs))
     Else
-        Exec = Application.Run(Procedure, Array(aArgs)(0))
+        Exec = Application.Run(Procedure, ParamArrayDelegate(aArgs))
     End If
 End Function
 

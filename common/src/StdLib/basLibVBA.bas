@@ -28,7 +28,11 @@ Attribute VB_Name = "basLibVBA"
 Option Compare Database
 Option Explicit
 
-' 2-tuple type.
+'''''''''''''''''''''''
+' Types and Constants '
+'''''''''''''''''''''''
+
+' 2-tuple type (see also PairT).
 Public Type Pair
     First As Variant
     Second As Variant
@@ -284,7 +288,9 @@ Public Function FileEmpty( _
     FileEmpty = (FileLen(aFilePath) = 0)
 End Function
 
-Public Function FileDrive(aPath As String) As String
+Public Function FileDrive( _
+    ByVal aPath As String _
+) As String
     '
     ' Returns the drive name from the given path.
     '
@@ -504,7 +510,7 @@ Public Function FormatParam( _
     ' Returns the given args as a tab-delimited string.
     ' Arguments can be of any type, or array of type,
     ' convertible to a string. Emulates the output of
-    ' Debug.print
+    ' Debug.Print
     '
     Dim Arg As Variant
     
@@ -538,7 +544,8 @@ Public Function IsSomething( _
     Optional aArg As Variant _
 ) As Boolean
     '
-    ' Like "Not Is Nothing", but shorter.
+    ' Like "Not Is Nothing", but with less typing
+    ' and more checks.
     '
     On Error Resume Next
     If IsObject(aArg) Then
@@ -1086,7 +1093,7 @@ Public Function TablesList( _
         Dim exclude As Boolean
         
         exclude = (tdf.Attributes And aExcludeMask)
-        If Not exclude Then ArrayPushBack tbls, tdf.name
+        If Not exclude Then ArrayPushBack tbls, tdf.Name
     Next
     TablesList = tbls
 End Function

@@ -19,15 +19,13 @@ Attribute VB_Exposed = True
 ' DESCRIPTION                                               '
 '                                                           '
 ' This module defines a class that encapsulates a DAO.      '
-' Recordset making it accessible using dot notation.        '
-' DAORecordsetT is intended to encapsulate forward-only or  '
-' or snapshot type recordsets and thus has limited access   '
-' methods.                                                  '
-'                                                           '
+' Recordset accessible using dot notation. DAORecordsetT is '
+' intended to encapsulate forward-only or or snapshot type  '
+' recordsets and thus has limited access methods.           '                                               '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' None                                                      '
+' LibVBA                                                    '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -39,7 +37,15 @@ Attribute VB_Exposed = True
 Option Compare Binary
 Option Explicit
 
+'''''''''''''''''''
+' Private Members '
+'''''''''''''''''''
+
 Private rst As DAO.Recordset
+
+''''''''''''''''''''
+' Public Interface '
+''''''''''''''''''''
 
 Public Property Get BOF() As Boolean
     BOF = rst.BOF
@@ -53,11 +59,16 @@ Public Property Get EOF() As Boolean
     EOF = rst.EOF
 End Property
 
-Public Property Get Value(ByVal aFieldName As String) As Variant
+Public Property Get Value( _
+    ByVal aFieldName As String _
+) As Variant
     Value = rst.Fields(aFieldName).Value
 End Property
 
-Public Property Let Value(ByVal aFieldName As String, ByVal aValue As Variant)
+Public Property Let Value( _
+    ByVal aFieldName As String, _
+    ByVal aValue As Variant _
+)
     rst.Edit
     rst.Fields(aFieldName) = aValue
     rst.Update

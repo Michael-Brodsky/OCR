@@ -70,7 +70,9 @@ Public Property Get Capacity() As Long
     Capacity = ArraySize(Buffer)
 End Property
 
-Public Property Get Data(Optional aIndex As Variant) As Variant
+Public Property Get Data( _
+    Optional aIndex As Variant _
+) As Variant
     '
     ' Returns a buffer element, or the entire buffer
     ' if aIndex is omitted.
@@ -94,7 +96,10 @@ Public Property Get Data(Optional aIndex As Variant) As Variant
     End If
 End Property
 
-Public Property Let Data(Optional aIndex As Variant, aData As Variant)
+Public Property Let Data( _
+    Optional aIndex As Variant, _
+    aData As Variant _
+)
     '
     ' Assigns a buffer element, or the entire buffer
     ' if aIndex is omitted.
@@ -107,7 +112,10 @@ Public Property Let Data(Optional aIndex As Variant, aData As Variant)
     End If
 End Property
 
-Public Property Set Data(Optional aIndex As Variant, aData As Variant)
+Public Property Set Data( _
+    Optional aIndex As Variant, _
+    aData As Variant _
+)
     '
     ' Assigns a buffer element, or the entire buffer
     ' if aIndex is omitted.
@@ -122,7 +130,7 @@ End Property
 
 Public Sub Deallocate()
     '
-    ' Deallocates the buffer.
+    ' Deallocates the buffer and its contents.
     '
     If Not IsEmpty(Buffer) Then ArrayResize Buffer, 0
 End Sub
@@ -131,7 +139,7 @@ Public Sub Resize( _
     ByVal aSize As Long _
 )
     '
-    ' Resizes the storage buffer to the given number of elements.
+    ' Resizes the buffer to aSize elements.
     '
     MakeUnsigned aSize
     ArrayResize Buffer, aSize

@@ -31,9 +31,9 @@ Public Function ArrayBack( _
     ByRef aArray As Variant _
 ) As Variant
     '
-    ' Returns the the last element of an array. No type checking
-    ' is performed. The behavior is undefined if the array
-    ' argument is not an array.
+    ' Returns the the last array element. No type checking
+    ' is performed. The behavior is undefined if aArray is
+    ' not an array.
     '
     If IsObject(aArray(UBound(aArray))) Then
         Set ArrayBack = aArray(UBound(aArray))
@@ -48,7 +48,7 @@ Public Function ArrayDistance( _
 ) As Long
     
     '
-    ' Returns the number of hops from first to last.
+    ' Returns the number of hops from aFirst to aLast.
     ' This function is used by container classes for
     ' consistency in implementing iterator-like functionality.
     '
@@ -61,7 +61,7 @@ Public Function ArrayEmpty( _
     '
     ' Returns TRUE if an array has zero elements (is unallocated),
     ' else returns FALSE. No type checking is performed. The
-    ' behavior is undefined if the array argument is not an array.
+    ' behavior is undefined if aArray is not an array.
     '
     ArrayEmpty = (ArraySize(aArray) = 0)
 End Function
@@ -72,6 +72,11 @@ Public Sub ArrayFill( _
     aValue As Variant, _
     Optional ByVal aCount As Long = 1 _
 )
+    '
+    ' Assigns aValue to aCount array elements begining at aPosition.
+    ' No type or bounds checking is performed. The behavior is
+    ' undefined if aArray is not an array.
+    '
     Dim it As Long
     
     For it = aPosition To aPosition + aCount - 1
@@ -88,6 +93,10 @@ End Sub
 Public Function ArrayFirst( _
     ByRef aArray As Variant _
 ) As Variant
+    '
+    ' Returns the lower bound of aArray. The behavior is
+    ' undefined if aArray is not an array.
+    '
     ArrayFirst = LBound(aArray)
 End Function
 
@@ -95,9 +104,9 @@ Public Function ArrayFront( _
     ByRef aArray As Variant _
 ) As Variant
     '
-    ' Returns the the first element of an array. No type checking
-    ' is performed. The behavior is undefined if the array
-    ' argument is not an array.
+    ' Returns the the first array element. No type checking
+    ' is performed. The behavior is undefined if aArray is
+    ' not an array.
     '
     If IsObject(aArray(LBound(aArray))) Then
         Set ArrayFront = aArray(LBound(aArray))
@@ -112,27 +121,36 @@ Public Function ArrayInsert( _
     aValue As Variant, _
     Optional ByVal aCount As Long = 1 _
 ) As Long
-        Dim i As Long, last As Long
-    
-        last = ArraySize(aArray)
-        ArrayResize aArray, last + aCount
-        For i = 0 To aCount - 1
-            Dim it As Long
-            
-            it = i + aPosition
-            If IsObject(aArray(it)) Then
-                Set aArray(last) = aArray(it)
-            Else
-                aArray(last) = aArray(it)
-            End If
-            last = last + 1
-        Next
-        ArrayFill aArray, aPosition, aValue, aCount
+    '
+    ' Inserts aCount array elements of aValue begining at aPosition.
+    ' No type checking is performed. Increases the array size by
+    ' aCount. An error occurs if aPosition past the end.
+    '
+    Dim i As Long, last As Long
+
+    last = ArraySize(aArray)
+    ArrayResize aArray, last + aCount
+    For i = 0 To aCount - 1
+        Dim it As Long
+        
+        it = i + aPosition
+        If IsObject(aArray(it)) Then
+            Set aArray(last) = aArray(it)
+        Else
+            aArray(last) = aArray(it)
+        End If
+        last = last + 1
+    Next
+    ArrayFill aArray, aPosition, aValue, aCount
 End Function
 
 Public Function ArrayLast( _
     ByRef aArray As Variant _
 ) As Variant
+    '
+    ' Returns the upper bound of aArray. The behavior is
+    ' undefined if aArray is not an array.
+    '
     ArrayLast = UBound(aArray)
 End Function
 
@@ -140,11 +158,11 @@ Public Function ArrayMax( _
     aArray As Variant _
 ) As Variant
     '
-    ' Returns the largest element in a one-dimensional, array
+    ' Returns the largest element in a one-dimensional array
     ' using the greater than > operator. No type checking is
-    ' performed. The behavior is undefined if the array
-    ' argument is not a one-dimensional array or if the array
-    ' elements are not primitive types.
+    ' performed. The behavior is undefined if aArray is not a
+    ' one-dimensional array or the array elements are not
+    ' primitive types.
     '
     If ArraySize(aArray) > 0 Then
         Dim a As Variant
@@ -164,9 +182,9 @@ Public Function ArrayMean( _
     '
     ' Returns the arithmatic mean of elements in a one-
     ' dimensional array. No type checking is performed.
-    ' The behavior is undefined if the array argument is
-    ' not a one-dimensional array or the array elements
-    ' are non-numeric.
+    ' The behavior is undefined if aArray is not a one-
+    ' dimensional array or the array elements are non-
+    ' numeric.
     '
     ArrayMean = ArraySum(aArray) / ArraySize(aArray)
 End Function
@@ -175,11 +193,11 @@ Public Function ArrayMin( _
     aArray As Variant _
 ) As Variant
     '
-    ' Returns the smallest element in a one-dimensional,
-    ' array using the less than < operator. No type checking
-    ' is performed. The behavior is undefined if the array
-    ' argument is not a one-dimensional array or if the array
-    ' elements are not primitive types.
+    ' Returns the smallest element in a one-dimensional array
+    ' using the less than < operator. No type checking is
+    ' performed. The behavior is undefined aArray is not a
+    ' one-dimensional array or the array elements are not
+    ' primitive types.
     '
     If ArraySize(aArray) > 0 Then
         Dim a As Variant
@@ -198,11 +216,11 @@ Public Function ArrayMinMax( _
 ) As Pair
     '
     ' Returns the smallest and largest elements in a one-
-    ' dimensional array as a Pair, where .first = smallest
-    ' and .second = largest. No type checking is performed.
-    ' The behavior is undefined if the array argument is
-    ' not a one-dimensional array or the array elements are
-    ' not primitive types.
+    ' dimensional array as a Pair, where .First = smallest
+    ' and .Second = largest. No type checking is performed.
+    ' The behavior is undefined if aArray is not a one-
+    ' dimensional array or the array elements are not
+    ' primitive types.
     '
     If ArraySize(aArray) > 0 Then
         Dim a As Variant
@@ -228,8 +246,7 @@ Public Function ArrayPopBack( _
     '
     ' Removes and returns the last element from an array.
     ' No type checking is performed. The behavior is
-    ' undefined if the array argument is not a dynamic
-    ' array.
+    ' undefined if aArray is not a dynamic array.
     '
     If IsObject(ArrayBack(aArray)) Then
         Set ArrayPopBack = ArrayBack(aArray)
@@ -243,10 +260,9 @@ Public Function ArrayPopFront( _
     ByRef aArray As Variant _
 ) As Variant
     '
-    ' Removes and returns the first element from an array.
+    ' Removes and returns the first array element.
     ' No type checking is performed. The behavior is
-    ' undefined if the array argument is not a dynamic
-    ' array.
+    ' undefined if aArray is not a dynamic array.
     '
     If IsObject(ArrayFront(aArray)) Then
         Set ArrayPopFront = ArrayFront(aArray)
@@ -264,8 +280,7 @@ Public Sub ArrayPushBack( _
     '
     ' Appends an element after the last element of an
     ' array. No type checking is performed. The behavior
-    ' is undefined if the array argument is not a
-    ' dynamic array.
+    ' is undefined if aArray is not a dynamic array.
     '
     Dim sz As Integer
     
@@ -283,10 +298,9 @@ Public Sub ArrayPushFront( _
     aValue As Variant _
 )
     '
-    ' Inserts an element before the firstst element of an
-    ' array. No type checking is performed. The behavior
-    ' is undefined if the array argument is not a dynamic
-    ' array.
+    ' Inserts an element before the first array element.
+    ' No type checking is performed. The behavior is
+    ' undefined if aArray is not a dynamic array.
     '
     ArrayPushBack aArray, aValue
     ArrayRotateRight aArray
@@ -299,9 +313,9 @@ Public Function ArrayRange( _
     ' Returns the arithmatic range of elements in a one-
     ' dimensional array. No type checking is performed.
     ' An error occurs if the elements are non-numeric types.
-    ' The behavior is undefined if the array argument is
-    ' not a one-dimensional array or the array elements
-    ' are not primitive types.
+    ' The behavior is undefined if aArray is not a one-
+    ' dimensional array or the array elements are not
+    ' primitive types.
     '
     Dim range As Pair
     
@@ -315,9 +329,9 @@ Public Function ArrayRemove( _
     Optional ByVal aCount As Long = 1 _
 ) As Long
     '
-    ' Removes aCount elements begining at aPosition.
-    ' Decreases the array size by aCount. No type or
-    ' bounds checking is performed.
+    ' Removes aCount array elements begining at aPosition.
+    ' Decreases the array size by aCount. No type or bounds
+    ' checking is performed.
     '
     If aCount > 0 Then
         Dim i As Long, First As Long, last As Long, sz As Long
@@ -347,8 +361,7 @@ Public Function ArrayResize( _
     ' Resizes a dynamic array to the specified size in
     ' elements. Arrays of size zero are deallocated.
     ' No type-checking is performed. The behavior is
-    ' undefined if the array argument is not a dynamic
-    ' array.
+    ' undefined if aArray is not a dynamic array.
     '
     aSize = aSize - 1
     If aSize < 0 Then
@@ -366,12 +379,12 @@ Public Function ArrayRotateLeft( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array count elements to the left,
+    ' Rotates the contents of an array aCount elements to the left,
     ' wrapping the left-most element to the right-most element.
-    ' If count is negative then calls ArrayRotateRight() with the
-    ' absolute value of count. No type-checking is performed. The
-    ' behavior is undefined if the array argument is not an array
-    ' or the array elements are not a homogeneous type.
+    ' If aCount is negative then calls ArrayRotateRight() with the
+    ' absolute value of aCount. No type-checking is performed. The
+    ' behavior is undefined if aArray is not an array or the array
+    ' elements types are not homogeneous.
     '
     Dim i As Integer, j As Integer
     
@@ -392,12 +405,12 @@ Public Function ArrayRotateRight( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array count elements to the right,
+    ' Rotates the contents of an array aCount elements to the right,
     ' wrapping the right-most element to the left-most element.
-    ' If count is negative then calls ArrayRotateLeft() with the
-    ' absolute value of count. No type-checking is performed. The
-    ' behavior is undefined if the array argument is not an array
-    ' or the array elements are not a homogeneous type.
+    ' If aCount is negative then calls ArrayRotateLeft() with the
+    ' absolute value of aCount. No type-checking is performed. The
+    ' behavior is undefined if aArray is not an array or the array
+    ' elements types are not homogeneous.
     '
     Dim i As Integer, j As Integer
     
@@ -420,11 +433,10 @@ Public Function ArraySearch( _
 ) As Variant
     '
     ' Searches for and returns the array element whose value
-    ' matches the given value, if any. Uses the most suitable
-    ' algorithm based on the sorted argument. No type-checking
-    ' is performed. The behavior is undefined if the array
-    ' argument is not an array or the array elements and value
-    ' argument are not a homogeneous type.
+    ' matches aValue, if any. Uses the most suitable algorithm
+    ' based on aSorted. No type-checking is performed. The
+    ' behavior is undefined if the aArray is not an array, or
+    ' the array elements and aValue typesare not a homogeneous.
     '
     If aSorted Then
         ArraySearch = SearchBinary(aValue, aArray)
@@ -438,11 +450,11 @@ Public Function ArrayShiftLeft( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array count element to the left.
-    ' The right-most element is set to its default value. If count
+    ' Shifts the contents of an array aCount elements to the left.
+    ' The right-most element is set to its default value. If aCount
     ' is negative then calls ArrayShiftRight() with the absolute
-    ' value of count. No type checking is performed. The behavior
-    ' is undefined if the array argument is not an array.
+    ' value of aCount. No type checking is performed. The behavior
+    ' is undefined if aArray is not an array.
     '
     Dim i As Integer, j As Integer
     
@@ -476,11 +488,11 @@ Public Function ArrayShiftRight( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array count elements to the right.
-    ' The left-most element is set to Empty or Nothing. If count
+    ' Shifts the contents of an array aCount elements to the right.
+    ' The left-most element is set to its default value. If aCount
     ' is negative then calls ArrayShiftLeft() with the absolute
-    ' value of count. No type checking is performed. The behavior
-    ' is undefined if the array argument is not an array.
+    ' value of aCount. No type checking is performed. The behavior
+    ' is undefined if aArray is not an array.
     '
     Dim i As Integer, j As Integer
     
@@ -514,8 +526,8 @@ Public Function ArraySize( _
 ) As Long
     '
     ' Returns the size of an array in elements.
-    ' Returns 0 if the array argument is an
-    ' unallocated array or not an array.
+    ' Returns 0 if aArray is an unallocated
+    ' array or not an array.
     '
     On Error Resume Next
     ArraySize = UBound(aArray) - LBound(aArray) + 1
@@ -529,9 +541,8 @@ Public Sub ArraySort( _
     ' Lexicographically sorts a one-dimensional array using
     ' the insertion sort algorithm. Array elements must be
     ' contiguous. No type checking is performed. The behavior
-    ' is undefined if the array argument is not a one-
-    ' dimensional array or the array elements are not primitive
-    ' types.
+    ' is undefined if aArray is not a one- dimensional array
+    ' or the array elements are not primitive types.
     '
     Dim i As Integer, n As Integer
     
@@ -558,8 +569,8 @@ Public Function ArraySorted( _
     '
     ' Returns TRUE if a one-dimensional array is lexicographically sorted,
     ' unallocated or not an array, else returns FALSE. No type checking is
-    ' performed. The behavior is undefined if the array argument is not a
-    ' one-dimensional array or the array elements are not primitive types.
+    ' performed. The behavior is undefined if aArray is not a one-dimensional
+    ' array or the array elements are not primitive types.
     '
     Dim i As Integer, j As Integer
     Dim ai As Variant
@@ -589,9 +600,9 @@ Public Function ArraySum( _
     '
     ' Returns the arithmatic sum of elements in a one-
     ' dimensional array. No type checking is performed.
-    ' The behavior is undefined if the array argument is
-    ' not a one-dimensional array or the array elements
-    ' are non-numeric.
+    ' The behavior is undefined if aArray is not a one-
+    ' dimensional array or the array elements are non-
+    ' numeric.
     '
     Dim a As Variant
     
@@ -605,9 +616,8 @@ Public Function ArrayToCsv( _
     Optional ByVal aDelim As String = "," _
 ) As String
     '
-    ' Returns the elements of an array as a delimited string.
-    ' The array argument must be convertible to an array of
-    ' type String.
+    ' Returns the elements of aArray as a delimited string.
+    ' aArray must be convertible to an array of type String.
     '
     ArrayToCsv = Join(aArray, aDelim)
 End Function
@@ -617,7 +627,7 @@ Public Function MinMaxOf( _
 ) As Pair
     '
     ' Returns the smallest and largest values from the given argumments
-    ' as a Pair, where .first = smallest, .second = largest.
+    ' as a Pair, where .First = smallest, .Second = largest.
     '
     MinMaxOf = ArrayMinMax(ParamArrayDelegate(aArgs))
 End Function
@@ -658,10 +668,12 @@ Public Function ParamArrayDelegate( _
     End If
 End Function
 
-Public Function ParamArrayParam(aArray As Variant) As Variant
+Public Function ParamArrayParam( _
+    aArray As Variant _
+) As Variant
     '
-    ' Returns the first element of an array or Empty
-    ' if the array size = 0. This function can reverse
+    ' Returns the first element of aArray or Empty if
+    ' the array size = 0. This function can reverse
     ' the effects of ParamArrayDelegate(), and call
     ' functions with any number of discrete parameters,
     ' by calling this function once for each expected
@@ -680,9 +692,9 @@ Public Function ParamArrayParam(aArray As Variant) As Variant
     '       a=ParamArrayDelegate(args)
     '       Select Case target
     '           Case "foo":
-    '               foo ParamArrayParam(a),ParamArrayParam(a),ParamArrayParam(a)
+    '               foobar = foo(ParamArrayParam(a),ParamArrayParam(a),ParamArrayParam(a))    ' <-- The magick.
     '           Case "bar":
-    '               bar ParamArrayParam(a)
+    '               foobar = bar(ParamArrayParam(a))  ' <--
     '       End Select
     '   End Function
     '
@@ -694,7 +706,7 @@ Public Function ParamToCsv( _
     ParamArray aArgs() As Variant _
 ) As String
     '
-    ' Returns the given ParamArray as a comma-separated string.
+    ' Returns the given arguments as a comma-separated string.
     '
     If (Not Not aArgs) <> 0 Then ParamToCsv = Join(aArgs, ",")
 End Function
@@ -704,7 +716,7 @@ Private Function SearchBinary( _
     aArray As Variant _
 ) As Variant
     '
-    ' Searches a sorted one-dimensional array for the given value and
+    ' Searches a sorted one-dimensional array for aValue and
     ' returns the value if found. Uses the binary search algorithm.
     '
     Dim low As Integer, high As Integer, mid As Integer
@@ -730,7 +742,7 @@ Private Function SearchSequential( _
 ) As Variant
     '
     ' Searches each elelment of a one-dimensional array
-    ' for the given value and returns the value if found.
+    ' for aArray and returns the value if found.
     '
     Dim elem As Variant
     
