@@ -1,1 +1,1 @@
-This folder contains development and debug versions libraries UI apps.
+This folder contains source files for the DOCUFILE_TS application and libraries.
