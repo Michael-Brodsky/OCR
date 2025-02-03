@@ -76,7 +76,7 @@ Public Property Let At( _
     aValue As Variant _
 )
     '
-    ' Assigns aValue to the element aIndex.
+    ' Assigns aValue to the element at aIndex.
     '
     Container.At(aIndex) = aValue
 End Property
