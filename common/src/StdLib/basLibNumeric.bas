@@ -55,7 +55,7 @@ Public Function BitIsSet( _
     aBit As Byte _
 ) As Boolean
     '
-    ' Returns TRUE if the nth bit in x is set,
+    ' Returns TRUE if the nth bit of x is set,
     ' else returns FALSE. Bit positions are zero-based.
     '
     Dim mask As Long
@@ -70,7 +70,7 @@ Public Function Constrain( _
     aMax As Variant _
 ) As Variant
     '
-    ' Returns x constrained between min and max.
+    ' Returns x constrained between aMin and aMin.
     '
     If x < aMin Then
         Constrain = aMin
