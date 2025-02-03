@@ -19,7 +19,18 @@ Attribute VB_Exposed = True
 ' DESCRIPTION                                               '
 '                                                           '
 ' This module defines a container class that encapsulates   '
-' fixed-size arrays.                                        '
+' fixed-size arrays. By definition, such an array cannot be '
+' resized. However, due to VBA limitations and the          '
+' underlying storage buffer being a dynamic array, this     '
+' class enforces proper behaviour through its interface.    '
+' Objects should be initialized with the constructor:       '
+'       dim a As aArrayT                                    '
+'       Set a = NewArrayT(n), where n is the size.          '
+' Initial values can be set with the InitList() function:   '
+'       a.InitList(1,2,3,4,...)                             '
+' Clients should not call the Init() function as an error   '
+' will occur if the object is uninstantiated or already     '
+' initialized.                                              '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
@@ -193,7 +204,7 @@ Public Property Set Front( _
     Set Container.Front = aValue
 End Property
 
-Public Sub InitList( _
+Public Sub Init( _
     aValues As Variant _
 )
     '
@@ -204,6 +215,20 @@ Public Sub InitList( _
     Size = ArraySize(aValues)
     For i = 0 To ArraySize(aValues) - 1
         Container.At(i) = aValues(i)
+    Next
+End Sub
+
+Public Sub InitList( _
+    ParamArray aValues() As Variant _
+)
+    '
+    ' Assigns aValues to an initialized array.
+    '
+    Dim i As Long, v As Variant
+    
+    For Each v In aValues
+        Container.At(i) = v
+        i = i + 1
     Next
 End Sub
 
@@ -230,7 +255,7 @@ Public Property Get Size() As Long
     Size = Container.Capacity
 End Property
 
-Public Property Let Size( _
+Private Property Let Size( _
     ByVal aSize As Long _
 )
     '

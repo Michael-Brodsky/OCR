@@ -555,7 +555,7 @@ Public Function IsSomething( _
 End Function
 
 Public Function IsValue( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 ) As Boolean
     '
     ' Returns TRUE if the given value is not nothing, null
@@ -704,7 +704,7 @@ End Function
 Public Sub PropertyCreate( _
     aDatabase As Database, _
     ByVal aProperty As String, _
-    ByVal aValue As Variant, _
+    aValue As Variant, _
     Optional ByVal aType As Integer = dbText _
 )
     '
@@ -778,7 +778,7 @@ End Function
 Public Sub PropertySet( _
     aDatabase As Database, _
     ByVal aProperty As String, _
-    ByVal aValue As Variant, _
+    aValue As Variant, _
     Optional ByVal aType As Integer = kdbNone _
 )
     '
@@ -796,7 +796,7 @@ End Sub
 
 Public Sub PropertyUpdate( _
     ByVal aPropertyName As String, _
-    Optional ByVal aValue As Variant = Empty, _
+    Optional aValue As Variant = Empty, _
     Optional ByVal aDefault As Variant = Empty, _
     Optional ByVal aType As Integer, _
     Optional aDatabase As DAO.Database _

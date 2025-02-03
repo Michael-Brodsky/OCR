@@ -37,24 +37,12 @@ Public Function NewAllocatorT( _
 End Function
 
 Public Function NewArrayT( _
-    ByVal aSize As Long, _
-    ParamArray aValues() As Variant _
+    ByVal aSize As Long _
 ) As ArrayT
-    Dim obj As New ArrayT, v As Variant
+    Dim obj As New ArrayT, v() As Variant
     
-    obj.Size = aSize
-    If UBound(aValues) > -1 Then
-        Dim i As Long, val As Variant
-        
-        For Each val In aValues
-            If IsObject(val) Then
-                Set obj.At(i) = val
-            Else
-                obj.At(i) = val
-            End If
-            i = i + 1
-        Next
-    End If
+    If aSize <> 0 Then ReDim v(aSize - 1)
+    obj.Init v
     Set NewArrayT = obj
     Set obj = Nothing
 End Function
@@ -140,17 +128,16 @@ Public Function NewStackT( _
 ) As StackT
     Dim obj As New StackT
     
-    'obj.Data = aData
     Set NewStackT = obj
     Set obj = Nothing
 End Function
 
 Public Function NewVectorT( _
-    Optional aData As Variant _
+    Optional ByVal aSize As Long = 0 _
 ) As VectorT
     Dim obj As New VectorT
     
-    obj.Data = aData
+    If aSize <> 0 Then obj.Resize aSize
     Set NewVectorT = obj
     Set obj = Nothing
 End Function

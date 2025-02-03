@@ -73,7 +73,7 @@ End Property
 
 Public Property Let At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns aValue to the element at the given aIndex.
@@ -83,7 +83,7 @@ End Property
 
 Public Property Set At( _
     ByVal aIndex As Long, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns aValue to the element at the given aIndex.
@@ -103,7 +103,7 @@ Public Property Get Back() As Variant
 End Property
 
 Public Property Let Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns the given aValue to the last element.
@@ -112,7 +112,7 @@ Public Property Let Back( _
 End Property
 
 Public Property Set Back( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns the given aValue to the last element.
@@ -186,7 +186,7 @@ Public Property Get Front() As Variant
 End Property
 
 Public Property Let Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns the given aValue to the first element.
@@ -195,7 +195,7 @@ Public Property Let Front( _
 End Property
 
 Public Property Set Front( _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     '
     ' Assigns the given aValue to the first element.
@@ -207,12 +207,12 @@ Public Sub InitList( _
     ParamArray aValues() As Variant _
 )
     '
-    ' Assigns a list of aValues to the vector.
+    ' Assigns the list of aValues to the vector.
     '
     Dim item As Variant, i As Long
     
     Clear
-    Reserve ArraySize(Array(aValues)(0))
+    Reserve ArraySize(ParamArrayDelegate(aValues))
     For Each item In aValues
         PushBack item
     Next
@@ -297,7 +297,7 @@ End Sub
 
 Public Sub ShrinkToFit()
     '
-    ' Reduces the vector Capacity its current Size in elements.
+    ' Reduces the vector Capacity to its current Size.
     '
     Container.ShrinkToFit
 End Sub

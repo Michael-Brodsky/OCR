@@ -67,7 +67,7 @@ End Property
 
 Public Property Let Value( _
     ByVal aFieldName As String, _
-    ByVal aValue As Variant _
+    aValue As Variant _
 )
     rst.Edit
     rst.Fields(aFieldName) = aValue
