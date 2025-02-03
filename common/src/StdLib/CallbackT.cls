@@ -66,9 +66,17 @@ Public Function Exec( _
     ' variant array.
     '
     If Not Target Is Nothing Then
-        Exec = CallByName(Target, Procedure, Method, ParamArrayDelegate(aArgs))
+        If Not IsMissing(aArgs) Then
+            Exec = CallByName(Target, Procedure, Method, CVar(aArgs))
+        Else
+            Exec = CallByName(Target, Procedure, Method)
+        End If
     Else
-        Exec = Application.Run(Procedure, ParamArrayDelegate(aArgs))
+        If Not IsMissing(aArgs) Then
+            Exec = Application.Run(Procedure, CVar(aArgs))
+        Else
+            Exec = Application.Run(Procedure)
+        End If
     End If
 End Function
 

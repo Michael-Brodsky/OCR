@@ -839,7 +839,7 @@ Public Sub RecordsetAddNew( _
     ' arguments. The args must be given as field-value pairs,
     ' e.g. "Field1",Value1,"Field2",Value2, ... ,"FieldN",ValueN.
     '
-    RecordsetDo aRst, roAddnew, ParamArrayDelegate(aArgs)
+    If Not IsMissing(aArgs) Then RecordsetDo aRst, roAddnew, CVar(aArgs)
 End Sub
 
 Public Sub RecordsetDelete( _
@@ -898,7 +898,7 @@ Public Sub RecordsetEdit( _
     ' The args must given as field-value pairs,
     ' e.g. "Field1",Value1,"Field2",Value2, ... ,"FieldN",ValueN.
     '
-    RecordsetDo aRst, roEdit, ParamArrayDelegate(aArgs)
+    If Not IsMissing(aArgs) Then RecordsetDo aRst, roEdit, CVar(aArgs)
 End Sub
 
 Public Function RecordsetCount( _
@@ -957,7 +957,11 @@ Public Function RemoteCall( _
     dbproc = FileBaseName(aDatabaseName) & "." & aProcedureName
     app.OpenCurrentDatabase aDatabaseName, False
     app.Visible = False
-    RemoteCall = app.Run(dbproc, ParamArrayDelegate(aArgs))
+    If Not IsMissing(aArgs) Then
+        RemoteCall = app.Run(dbproc, CVar(aArgs))
+    Else
+        RemoteCall = app.Run(dbproc)
+    End If
     app.Quit
     Set app = Nothing
 End Function
@@ -1130,9 +1134,7 @@ Public Function TextConcat( _
     '
     ' Concatenates the given tokens into a delimited string.
     '
-    If Not IsMissing(aTokens) Then
-        TextConcat = Join(aTokens, aDelim)
-    End If
+    If Not IsMissing(aTokens) Then TextConcat = Join(aTokens, aDelim)
 End Function
 
 Public Function TimeoutMs( _

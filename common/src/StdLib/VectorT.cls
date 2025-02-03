@@ -86,7 +86,7 @@ Public Property Set At( _
     aValue As Variant _
 )
     '
-    ' Assigns aValue to the element at aIndex.
+    ' Assigns aValue to the element aIndex.
     '
     Set Container.At(aIndex) = aValue
 End Property
@@ -147,7 +147,7 @@ End Function
 
 Public Property Get Data() As Variant
     '
-    ' Returns the underlying storage container.
+    ' Returns the underlying data.
     '
     If IsObject(Container.Data) Then
         Set Data = Container.Data
@@ -160,7 +160,7 @@ Public Property Let Data( _
     aData As Variant _
 )
     '
-    ' Assigns aData to the underlying storage container.
+    ' Assigns aData to the underlying data.
     '
     Container.Data = aData
 End Property
@@ -169,7 +169,7 @@ Public Property Set Data( _
     aData As Variant _
 )
     '
-    ' Assigns aData to the underlying storage container.
+    ' Assigns aData to the underlying data.
     '
     Set Container.Data = aData
 End Property
@@ -212,7 +212,7 @@ Public Sub InitList( _
     Dim item As Variant, i As Long
     
     Clear
-    Reserve ArraySize(ParamArrayDelegate(aValues))
+    Reserve ArraySize(CVar(aValues))
     For Each item In aValues
         PushBack item
     Next
@@ -260,7 +260,7 @@ Public Sub PushBack( _
     aValue As Variant _
 )
     '
-    ' Appends an element with aValue after the last element.
+    ' Appends an element with aValue value after the last element.
     '
     Container.PushBack aValue
 End Sub

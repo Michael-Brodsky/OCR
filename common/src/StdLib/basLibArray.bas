@@ -622,6 +622,15 @@ Public Function ArrayToCsv( _
     ArrayToCsv = Join(aArray, aDelim)
 End Function
 
+Public Function MaxOf( _
+    ParamArray aArgs() As Variant _
+) As Variant
+    '
+    ' Returns the largest value from the given arguments.
+    '
+    If Not IsMissing(aArgs) Then MaxOf = ArrayMax(CVar(aArgs))
+End Function
+
 Public Function MinMaxOf( _
     ParamArray aArgs() As Variant _
 ) As Pair
@@ -629,7 +638,7 @@ Public Function MinMaxOf( _
     ' Returns the smallest and largest values from the given argumments
     ' as a Pair, where .First = smallest, .Second = largest.
     '
-    MinMaxOf = ArrayMinMax(ParamArrayDelegate(aArgs))
+    If Not IsMissing(aArgs) Then MinMaxOf = ArrayMinMax(CVar(aArgs))
 End Function
 
 Public Function MinOf( _
@@ -638,34 +647,7 @@ Public Function MinOf( _
     '
     ' Returns the smallest value from the given argumments.
     '
-    MinOf = ArrayMin(ParamArrayDelegate(aArgs))
-End Function
-
-Public Function MaxOf( _
-    ParamArray aArgs() As Variant _
-) As Variant
-    '
-    ' Returns the largest value from the given arguments.
-    '
-    MaxOf = ArrayMax(ParamArrayDelegate(aArgs))
-End Function
-
-Public Function ParamArrayDelegate( _
-    ParamArray aArgs() As Variant _
-) As Variant
-    '
-    ' Returns the given arguments as a variant array.
-    '
-    If Not IsMissing(aArgs) Then
-        Dim arrArgs() As Variant, arrWrk() As Variant
-    
-        arrArgs = aArgs
-        Do While VarType(arrArgs(0)) >= vbArray And UBound(arrArgs) < 1
-            arrWrk = arrArgs(0)
-            arrArgs = arrWrk
-        Loop
-        ParamArrayDelegate = arrArgs
-    End If
+    If Not IsMissing(aArgs) Then MinOf = ArrayMin(CVar(aArgs))
 End Function
 
 Public Function ParamArrayParam( _
@@ -708,7 +690,7 @@ Public Function ParamToCsv( _
     '
     ' Returns the given arguments as a comma-separated string.
     '
-    If (Not Not aArgs) <> 0 Then ParamToCsv = Join(aArgs, ",")
+    If Not IsMissing(aArgs) Then ParamToCsv = Join(aArgs, ",")
 End Function
 
 Private Function SearchBinary( _
