@@ -62,7 +62,7 @@ Public Property Get At( _
     ByVal aIndex As Long _
 ) As Variant
     '
-    ' Returns the element at the given aIndex.
+    ' Returns the element at aIndex.
     '
     If IsObject(Container.At(aIndex)) Then
         Set At = Container.At(aIndex)
@@ -76,7 +76,7 @@ Public Property Let At( _
     aValue As Variant _
 )
     '
-    ' Assigns aValue to the element at the given aIndex.
+    ' Assigns aValue to the element aIndex.
     '
     Container.At(aIndex) = aValue
 End Property
@@ -86,7 +86,7 @@ Public Property Set At( _
     aValue As Variant _
 )
     '
-    ' Assigns aValue to the element at the given aIndex.
+    ' Assigns aValue to the element at aIndex.
     '
     Set Container.At(aIndex) = aValue
 End Property
@@ -106,7 +106,7 @@ Public Property Let Back( _
     aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the last element.
+    ' Assigns aValue to the last element.
     '
     Container.Back = aValue
 End Property
@@ -115,7 +115,7 @@ Public Property Set Back( _
     aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the last element.
+    ' Assigns aValue to the last element.
     '
     Set Container.Back = aValue
 End Property
@@ -147,7 +147,7 @@ End Function
 
 Public Property Get Data() As Variant
     '
-    ' Returns the underlying vector data.
+    ' Returns the underlying storage container.
     '
     If IsObject(Container.Data) Then
         Set Data = Container.Data
@@ -160,7 +160,7 @@ Public Property Let Data( _
     aData As Variant _
 )
     '
-    ' Assigns the given data to the underlying data.
+    ' Assigns aData to the underlying storage container.
     '
     Container.Data = aData
 End Property
@@ -169,7 +169,7 @@ Public Property Set Data( _
     aData As Variant _
 )
     '
-    ' Assigns the given data to the underlying data.
+    ' Assigns aData to the underlying storage container.
     '
     Set Container.Data = aData
 End Property
@@ -189,7 +189,7 @@ Public Property Let Front( _
     aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     '
     Container.Front = aValue
 End Property
@@ -198,7 +198,7 @@ Public Property Set Front( _
     aValue As Variant _
 )
     '
-    ' Assigns the given aValue to the first element.
+    ' Assigns aValue to the first element.
     '
     Set Container.Front = aValue
 End Property
@@ -224,7 +224,7 @@ Public Function Insert( _
     Optional ByVal aCount As Long = 1 _
 ) As Long
     '
-    ' Inserts aCount elements with the given aValue begining
+    ' Inserts aCount elements with aValue begining
     ' at aPosition.
     '
     Insert = Container.Insert(aPosition, aValue, aCount)
@@ -247,7 +247,7 @@ End Property
 
 Public Function PopBack() As Variant
     '
-    ' Removes and returns the last element from the vector.
+    ' Removes and returns the last element.
     '
     If IsObject(Container.Back) Then
         Set PopBack = Container.PopBack
@@ -260,14 +260,14 @@ Public Sub PushBack( _
     aValue As Variant _
 )
     '
-    ' Appends an element with the given aValue value after the last element.
+    ' Appends an element with aValue after the last element.
     '
     Container.PushBack aValue
 End Sub
 
 Public Sub Remove( _
     ByVal aFirst As Long, _
-    Optional aCount As Long = 1 _
+    Optional ByVal aCount As Long = 1 _
 )
     '
     ' Removes aCount elements begining at aPosition.
@@ -304,7 +304,7 @@ End Sub
 
 Public Property Get Size() As Long
     '
-    ' Returns the stack size in elements.
+    ' Returns the vector size in elements.
     '
     Size = Container.Size
 End Property
