@@ -1,0 +1,122 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "ProcessInfoT"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                                                           '
+' ProcessInfoT                                              '
+'                                                           '
+' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20241107                                              '
+'                                                           '
+' All rights reserved. Unauthorized use prohibited.         '
+'                                                           '
+' DESCRIPTION                                               '
+'                                                           '
+' This module defines a class that encapsulates a DAO.      '
+' Recordset holding information about a catalog database    '
+' and accessible using dot notation.                        '
+'                                                           '
+' ProcessInfoT                                              '
+'                                                           '
+' DAORecordsetT                                             '
+'                                                           '
+' NOTES                                                     '
+'                                                           '
+' This version of the library has only been tested with     '
+' MS ACCESS 365 (64-bit) implementations.                   '
+'                                                           '
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Compare Binary
+Option Explicit
+
+Private Data As DAORecordsetT
+
+Public Property Get BOF() As Boolean
+    BOF = Data.BOF
+End Property
+
+Public Property Get CatalogName() As String
+    CatalogName = Data.Value("Catalog Name")
+End Property
+
+Public Property Get connection() As String
+    connection = Nz(Data.Value("Connection"))
+End Property
+
+Public Property Get Count() As Long
+    Count = Data.Count
+End Property
+
+Public Property Get DeleteDuplicates() As Boolean
+    DeleteDuplicates = Data.Value("Delete Duplicates")
+End Property
+
+Public Property Get name() As String
+    name = Data.Value("Process Name")
+End Property
+
+Public Property Get EOF() As Boolean
+    EOF = Data.EOF
+End Property
+
+Public Property Get FileTypes() As String
+    FileTypes = Data.Value("File Types")
+End Property
+
+Public Property Get ID() As Long
+    ID = Data.Value("ID")
+End Property
+
+Public Property Get SaveToField() As String
+    SaveToField = Nz(Data.Value("SaveTo Field"))
+End Property
+
+Public Property Get SaveToPath() As String
+    SaveToPath = Nz(Data.Value("SaveTo Path"))
+End Property
+
+Public Property Get SaveToProcedure() As String
+    SaveToProcedure = Nz(Data.Value("SaveTo Procedure"))
+End Property
+
+Public Property Get SaveToTable() As String
+    SaveToTable = Nz(Data.Value("SaveTo Table"))
+End Property
+
+Public Property Get SearchPath() As String
+    SearchPath = Data.Value("Search Path")
+End Property
+
+Public Property Get SearchName() As String
+    SearchName = Data.Value("Search Name")
+End Property
+
+Public Sub MoveNext()
+    Data.MoveNext
+End Sub
+
+Public Sub Close_()
+    If Not Data Is Nothing Then Data.Close_
+    Set Data = Nothing
+End Sub
+
+Public Sub Open_( _
+    ByVal aProcessId As Long _
+)
+    Dim qry As DAO.QueryDef
+    
+    Close_
+    Set Data = NewDAORecordsetT()
+    Set qry = CurrentDb.CreateQueryDef("", Replace(CurrentDb.QueryDefs(kOcrQueryProcesses).sql, ";", "") & _
+    " WHERE [~tblProcesses].[ID] = " & CStr(aProcessId) & ";")
+    Data.Open_ qry
+    qry.Close
+    Set qry = Nothing
+End Sub
