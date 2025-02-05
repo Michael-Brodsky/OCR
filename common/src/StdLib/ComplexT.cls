@@ -47,7 +47,10 @@ Public Imag As Double   ' The imaginary part.
 ' Private Interface '
 '''''''''''''''''''''
 
-Private Function ModSqr(aReal As Double, aImag As Double) As Double
+Private Function ModSqr( _
+    ByVal aReal As Double, _
+    ByVal aImag As Double _
+) As Double
     '
     ' Returns the sum of the real and imaginary parts squared.
     '
@@ -58,7 +61,9 @@ End Function
 ' Public Interface '
 ''''''''''''''''''''
 
-Public Function Add(aOther As ComplexT) As ComplexT
+Public Function Add( _
+    aOther As ComplexT _
+) As ComplexT
     '
     ' Returns the arithmatic sum of this and another complex number.
     '
@@ -92,7 +97,9 @@ Public Function Conjugate() As ComplexT
     Set result = Nothing
 End Function
 
-Public Function Diff(aOther As ComplexT) As ComplexT
+Public Function Diff( _
+    aOther As ComplexT _
+) As ComplexT
     '
     ' Returns the arithmatic difference of this and another complex number.
     '
@@ -103,7 +110,9 @@ Public Function Diff(aOther As ComplexT) As ComplexT
     Set result = Nothing
 End Function
 
-Public Function Div(aOther As ComplexT) As ComplexT
+Public Function Div( _
+    aOther As ComplexT _
+) As ComplexT
     '
     ' Returns the arithmatic quotient of this and another complex number.
     '
@@ -116,7 +125,9 @@ Public Function Div(aOther As ComplexT) As ComplexT
     Set result = Nothing
 End Function
 
-Public Function Eq(aOther As ComplexT) As Boolean
+Public Function Eq( _
+    aOther As ComplexT _
+) As Boolean
     '
     ' Returns TRUE if this complex number is equal to another,
     ' else returns FALSE.
@@ -154,7 +165,9 @@ Public Function Modulus() As Double
     Modulus = Sqr(ModSqr(Real, Imag))
 End Function
 
-Public Function Mul(aOther As ComplexT) As ComplexT
+Public Function Mul( _
+    aOther As ComplexT _
+) As ComplexT
     '
     ' Returns the product of this and another complex number.
     '
@@ -165,7 +178,9 @@ Public Function Mul(aOther As ComplexT) As ComplexT
     Set result = Nothing
 End Function
 
-Public Function Ne(aOther As ComplexT) As Boolean
+Public Function Ne( _
+    aOther As ComplexT _
+) As Boolean
     '
     ' Returns TRUE if this complex number is not equal to another,
     ' else returns FALSE.
