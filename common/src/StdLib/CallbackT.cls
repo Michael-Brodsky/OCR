@@ -46,11 +46,11 @@ Public Method As VbCallType ' VBA call method.
 
 Public Sub Init( _
     ByVal aProcedure As String, _
-    ByVal aMethod As VbCallType, _
+    Optional ByVal aMethod As VbCallType, _
     Optional aTarget As Object = Nothing _
 )
     '
-    ' Initializes the callback with the given arguments.
+    ' Initializes a callback with the given arguments.
     '
     Set Target = aTarget
     Procedure = aProcedure
@@ -61,22 +61,40 @@ Public Function Exec( _
     ParamArray aArgs() As Variant _
 ) As Variant
     '
-    ' Executes the callback with the given arguments. Callback procedures
-    ' must take a single argument of type variant that is passed as a
-    ' variant array.
+    ' Executes a callback with the given arguments. Callback parameters
+    ' are passed as a variant array.
     '
-    If Not Target Is Nothing Then
-        If Not IsMissing(aArgs) Then
-            Exec = CallByName(Target, Procedure, Method, CVar(aArgs))
+    Dim parms() As Variant, tmp() As Variant, v As Variant
+    
+    ' This allows passing the paramarray args to the callback procedure
+    ' whether any arguments were given or not, without hosing them up,
+    ' allegedly.
+    On Error GoTo Catch
+    parms = aArgs
+    Do While VarType(parms(0)) >= vbArray And UBound(parms) < 1
+        tmp = parms(0)
+        parms = tmp
+    Loop
+No_Args:
+    On Error GoTo 0
+    If IsSomething(Target) Then
+        If UBound(parms) > -1 Then
+            Exec = CallByName(Target, Procedure, Method, parms)
         Else
-            Exec = CallByName(Target, Procedure, Method)
+            Exec = CallByName(Target, Procedure, Method)    ' Specialization for procedures taking no parameters.
         End If
     Else
-        If Not IsMissing(aArgs) Then
-            Exec = Application.Run(Procedure, CVar(aArgs))
+        If UBound(parms) > -1 Then
+            Exec = Application.Run(Procedure, parms)
         Else
-            Exec = Application.Run(Procedure)
+            Exec = Application.Run(Procedure)               ' Specialization for procedures taking no parameters.
         End If
     End If
+    Exit Function
+    
+Catch:
+    If Err.Number = kvbErrSubscriptOutOfRange Then Resume No_Args
+    Err.Raise Err.Number
 End Function
+
 
