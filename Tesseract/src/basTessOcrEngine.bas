@@ -31,7 +31,7 @@ Attribute VB_Name = "basTessOcrEngine"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibOCR, Tesseract, ImageMagick, GhostScript               '
+' LibOCR, TessImageT                                        '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -115,7 +115,7 @@ End Function
 
 Public Function tessPathExeConvert() As String
     '
-    ' Returns the full path of the ImageMagick executable.
+    ' Returns the full path to the ImageMagick executable.
     '
     Const kRegKey As String = "HKLM\SOFTWARE\ImageMagick\Current\BinPath"
     Const kExeName As String = "magick.exe"
@@ -131,7 +131,7 @@ End Function
 
 Public Function tessPathExeOcr() As String
     '
-    ' Returns the full path of the Tesseract executable.
+    ' Returns the full path to the Tesseract executable.
     '
     Const kExeName As String = "tesseract.exe"
     Const kRegKey = "HKEY_LOCAL_MACHINE\SOFTWARE\Tesseract-OCR\InstallDir"
@@ -182,7 +182,7 @@ Private Function tessFileToText( _
 ) As String
     '
     ' Runs Tesseract to generate OCR text from the given file.
-    ' The OCR text file is created in the temporary folder.
+    ' The OCR text file is created in the given folder.
     '
     Dim Params As String, hInstance As Long, fout As String
     
@@ -236,18 +236,6 @@ End Function
 ''''''''''''''''''''''''''''''
 ' basClassFactory Extensions '
 ''''''''''''''''''''''''''''''
-
-Public Function NewOcrConvertT( _
-    aProcedure As CallbackT, _
-    ParamArray aArgs() As Variant _
-) As OcrConvertT
-    Dim obj As New OcrConvertT
-    
-    Set obj.Procedure = aProcedure
-    obj.Params = CVar(aArgs)
-    Set NewOcrConvertT = obj
-    Set obj = Nothing
-End Function
 
 Public Function NewTessImageT( _
     Optional aDensity As Variant, _
