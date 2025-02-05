@@ -253,6 +253,22 @@ Public Function LogB( _
     LogB = Log(x) / Log(b)
 End Function
 
+Public Function Polar( _
+    ByVal x As Double, _
+    ByVal y As Double _
+) As PairT
+    '
+    ' Returns the Cartesian coordinates x, y converted to
+    ' polar coordinates r, theta.
+    '
+    Dim result As PairT
+    
+    x = IIf(x = 0, kvbEpsilon, x)   ' Div by zero hack when x=0.
+    Set result = NewPairT(Sqr(x ^ 2 + y ^ 2), Atn(y / x) + IIf(y = 0 And x < 0, kPi, 0))    ' Atan2 hack when y=0.
+    Set Polar = result
+    Set result = Nothing
+End Function
+
 Public Function Quadratic( _
     ByVal a As Double, _
     ByVal b As Double, _
