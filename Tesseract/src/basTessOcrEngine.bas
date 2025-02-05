@@ -31,7 +31,7 @@ Attribute VB_Name = "basTessOcrEngine"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' basLibWin, basLibVBA, Tesseract, ImageMagick, GhostScript '
+' LibOCR, Tesseract, ImageMagick, GhostScript               '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -115,7 +115,7 @@ End Function
 
 Public Function tessPathExeConvert() As String
     '
-    ' Returns the full path to the ImageMagick executable.
+    ' Returns the full path of the ImageMagick executable.
     '
     Const kRegKey As String = "HKLM\SOFTWARE\ImageMagick\Current\BinPath"
     Const kExeName As String = "magick.exe"
@@ -131,7 +131,7 @@ End Function
 
 Public Function tessPathExeOcr() As String
     '
-    ' Returns the full path to the Tesseract executable.
+    ' Returns the full path of the Tesseract executable.
     '
     Const kExeName As String = "tesseract.exe"
     Const kRegKey = "HKEY_LOCAL_MACHINE\SOFTWARE\Tesseract-OCR\InstallDir"
@@ -182,7 +182,7 @@ Private Function tessFileToText( _
 ) As String
     '
     ' Runs Tesseract to generate OCR text from the given file.
-    ' The OCR text file is created in the given folder.
+    ' The OCR text file is created in the temporary folder.
     '
     Dim Params As String, hInstance As Long, fout As String
     
