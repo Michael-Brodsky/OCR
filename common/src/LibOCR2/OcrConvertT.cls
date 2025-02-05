@@ -22,7 +22,7 @@ Attribute VB_Exposed = True
 ' calls to convert source files into readable text files.   '
 ' The ocr engine must expose a procedure that executes the  '
 ' conversion. Each class instance must be initialized with  '
-' procedure name and any required arguments.                '
+' the procedure name and any required arguments.            '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
