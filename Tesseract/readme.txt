@@ -3,7 +3,7 @@ application that reads and catalogs files (scanned documents, photos, etc.) in a
 database. Source files must be convertible to plain text and contain a unique, human-
 readable "key", such as a number, date, or string that uniquely identifies the file. 
 DOCUFILE_TS reads each file according to user-defined rules, stores the information in 
-a database and moves the file to a specified permanent storage location. 
+a database and moves the file to a specified storage location. 
 
 To install and run DOCUFILE_TS, follow this procedure:
 
@@ -35,45 +35,20 @@ To install and run DOCUFILE_TS, follow this procedure:
 	   	its associated application.
 
 Process settings can be viewed and maintained using the "Settings" form. To open the 
-form, double-click in the "Processes" list of the Admin form. The Settings form has 
-four collapsible sections:
-
-Source Files - contains information on where and what types of files to search for.
-
-Catalog - contains information about the catalog database, where to permanently 
-	  store source files and how to store the file path.
-
-OCR Data Rules - lists user-defined rules that specify what and how to extract 
-	         data from source files and store it in the catalog.
-
-File Conversion - contains the OCR engine parameters used to convert source files 
-		- into readable text so they can be cataloged.
+form, double-click in the "Processes" list or click the gear icon on the Admin form.
+The form has several collapsible sections that specify where and what types of files 
+to search for, the catalog database, file storage path, data extraction and storage 
+rules, and parameters to convert source files into readable text.
 
 The default settings are for the demo program. Changing these settings may prevent 
-the application from successfully cataloging the sample files.
+the application from successfully cataloging the sample source files.
 
-The demo comes with a sample table "tblCatalogDemo", and form "Catalog", for storing
-and viewing cataloged files. These can be changed in the "Catalog" section of the 
-Settings form, allowing the user to select another database and table. To select an
-external database, enter the its full path or connection string. To use the current
-database, leave it blank. When a database is selected, the "SaveTo Table" drop-down 
-will list the available database tables. Once a table is selected, the 
-"SaveTo Field" drop-down will list the available fields that can be used to store 
-the cataloged file's permanent location, specified in the "SaveTo Path" setting 
-above it. If "SaveTo Path" is left blank, cataloged source files will remain in the 
-same location they were found. Regardless, the "SaveTo Table" and "SaveTo Field" 
-must be specified. If a different database and/or table are used, the "Catalog" 
-form will have to be redesigned or replaced with one compatible with the new 
-database and table.
-
-The sample source files resemble sales receipts. The demo extracts several pieces of
-information and stores the information, along with the file's permanent location in 
-the catalog table. The "OCR Data Rules" section of the Settings form lists the rules
-used to extract and store data from source files. They can be edited by double-
-clicking the list. The rules use Regular Expressions and pattern matching logic to 
-extract data and specify where and how to store it.
+The sample files resemble sales receipts. The demo extracts several pieces of data 
+and stores them, along with the file's permanent location, in the sample table 
+"tblCatalogDemo". Cataloged files can be viewed using the sample "Catalog" form 
+described above.
 
 NOTE: The application file, DOCUFILE_TS.accdb, is relocatable, but the folders  
 installed with it are not. They must remain in the same location where the 
-applicationwas originally installed, otherwise the application may stop working.
+application was originally installed, otherwise the application may stop working.
  
