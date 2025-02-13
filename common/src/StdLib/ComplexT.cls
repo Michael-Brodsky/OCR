@@ -24,7 +24,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' (None)                                                    '
+' PairT                                                     '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '

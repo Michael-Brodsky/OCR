@@ -72,10 +72,14 @@ End Enum
 Private WithEvents ListBoxEx As ListBox ' Client control.
 Attribute ListBoxEx.VB_VarHelpID = -1
 Private itemSelected() As Boolean       ' Current selection status of each client ListItem.
+                                
+'''''''''''''''''''''''''''
+' Public Member Accessors '
+'''''''''''''''''''''''''''
 
-''''''''''''''''''''
-' Public Interface '
-''''''''''''''''''''
+Public Property Get Control() As ListBox
+    Set Control = ListBoxEx
+End Property
 
 Public Property Set Control( _
     aListBox As ListBox _
@@ -85,6 +89,10 @@ Public Property Set Control( _
     '
     Set ListBoxEx = aListBox
 End Property
+
+''''''''''''''''''''
+' Public Interface '
+''''''''''''''''''''
 
 Public Property Get Selected( _
     Optional ByVal aNext As Variant _

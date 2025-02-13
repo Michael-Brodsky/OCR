@@ -469,6 +469,15 @@ Public Function FilesRecordset( _
     FilesRecordset = RecordsetCount(aFiles)
 End Function
 
+Public Function FmtSigFigs(aNumber As Double, aSigFigs As Integer) As String
+    '
+    ' Returns a number formatted with the specified number of
+    ' siginificant figures, upto 15.
+    '
+    FmtSigFigs = Format(aNumber, "0" & IIf((Int(aNumber) <> aNumber), "." & _
+    String(Constrain(aSigFigs, 0, 15), "0"), ""))
+End Function
+
 Public Sub FolderCreate( _
     ByVal aPath As String _
 )
@@ -698,7 +707,7 @@ Public Function ProcessIsRunning( _
     ' Returns TRUE if the named program is currently running, else returns FALSE.
     '
     ProcessIsRunning = (GetObject("winmgmts:") _
-    .ExecQuery("select * from win32_process where name='" & aName & "'").Count > 0)
+    .ExecQuery("select * from win32_process where name='" & aName & "'").count > 0)
 End Function
 
 Public Sub PropertyCreate( _

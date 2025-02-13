@@ -51,8 +51,8 @@ Public Property Get BOF() As Boolean
     BOF = rst.BOF
 End Property
 
-Public Property Get Count() As Long
-    Count = RecordsetCount(rst)
+Public Property Get count() As Long
+    count = RecordsetCount(rst)
 End Property
 
 Public Property Get EOF() As Boolean

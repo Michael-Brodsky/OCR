@@ -98,6 +98,13 @@ Public Function NewFso() As Object
     Set NewFso = CreateObject("Scripting.FileSystemObject")
 End Function
 
+Public Function NewIntervalTimerT() As IntervalTimerT
+    Dim obj As New IntervalTimerT
+    
+    Set NewIntervalTimerT = obj
+    Set obj = Nothing
+End Function
+
 Public Function NewListBoxExT( _
     Optional aControl As ListBox _
 ) As ListBoxExT

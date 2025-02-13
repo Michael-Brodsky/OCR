@@ -15,7 +15,7 @@ Attribute VB_Name = "basLibMath"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' (None)                                                    '
+' libNumeric, ComplexT                                      '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -44,26 +44,6 @@ Public Enum Polygon
     poHendecagon = 11
     poDodecagon = 12
 End Enum
-
-'''''''''''''''''''''''''''''
-' Common Physical Constants '
-'''''''''''''''''''''''''''''
-
-Public Const kAvogadro As Double = 6.02214076E+23
-Public Const kBoltzmann As Double = 1.380649E-23
-Public Const kC As Double = 299792458#
-Public Const kCharge As Double = 1.602176634E-19
-Public Const kDegsPerRad As Double = 57.2957795130823
-Public Const kE As Double = 2.71828182845905
-Public Const kEConst As Double = 0.577215664901532
-Public Const kFineStruct As Double = 0.0072973525643
-Public Const kG As Double = 0.000000000066743
-Public Const kGauss As Double = 0.834626841674073
-Public Const kOmega As Double = 0.567143290409783
-Public Const kPhi As Double = 1.61803398874989
-Public Const kPi As Double = 3.14159265358979
-Public Const kPlanck As Double = 6.62607015E-34
-Public Const kvbTwipsPerInch As Long = 1440
 
 '''''''''''''''''''''
 ' Library Functions '
@@ -275,7 +255,8 @@ Public Function Quadratic( _
     ByVal c As Double _
 ) As PairT
     '
-    ' Returns the roots of a quadratic function as a pair of complex numbers.
+    ' Returns the roots of a quadratic function, with coefficients
+    ' a, b and c, as a pair of complex numbers.
     '
     Dim disc As Double, num As ComplexT, denom As Double, root1 As ComplexT, root2 As ComplexT, result As PairT
     

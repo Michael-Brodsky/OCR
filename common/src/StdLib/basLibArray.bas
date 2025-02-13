@@ -154,92 +154,6 @@ Public Function ArrayLast( _
     ArrayLast = UBound(aArray)
 End Function
 
-Public Function ArrayMax( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the largest element in a one-dimensional array
-    ' using the greater than > operator. No type checking is
-    ' performed. The behavior is undefined if aArray is not a
-    ' one-dimensional array or the array elements are not
-    ' primitive types.
-    '
-    If ArraySize(aArray) > 0 Then
-        Dim a As Variant
-        
-        ArrayMax = aArray(LBound(aArray))
-        For Each a In aArray
-            If a > ArrayMax Then ArrayMax = a
-        Next
-    ElseIf Not IsArray(aArray) Then
-         ArrayMax = aArray
-    End If
-End Function
-
-Public Function ArrayMean( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the arithmatic mean of elements in a one-
-    ' dimensional array. No type checking is performed.
-    ' The behavior is undefined if aArray is not a one-
-    ' dimensional array or the array elements are non-
-    ' numeric.
-    '
-    ArrayMean = ArraySum(aArray) / ArraySize(aArray)
-End Function
-
-Public Function ArrayMin( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the smallest element in a one-dimensional array
-    ' using the less than < operator. No type checking is
-    ' performed. The behavior is undefined aArray is not a
-    ' one-dimensional array or the array elements are not
-    ' primitive types.
-    '
-    If ArraySize(aArray) > 0 Then
-        Dim a As Variant
-        
-        ArrayMin = aArray(LBound(aArray))
-        For Each a In aArray
-            If a < ArrayMin Then ArrayMin = a
-        Next
-    ElseIf Not IsArray(aArray) Then
-         ArrayMin = aArray
-    End If
-End Function
-
-Public Function ArrayMinMax( _
-    aArray As Variant _
-) As Pair
-    '
-    ' Returns the smallest and largest elements in a one-
-    ' dimensional array as a Pair, where .First = smallest
-    ' and .Second = largest. No type checking is performed.
-    ' The behavior is undefined if aArray is not a one-
-    ' dimensional array or the array elements are not
-    ' primitive types.
-    '
-    If ArraySize(aArray) > 0 Then
-        Dim a As Variant
-        
-        ArrayMinMax.First = aArray(LBound(aArray))
-        ArrayMinMax.Second = ArrayMinMax.First
-        For Each a In aArray
-            If a < ArrayMinMax.First Then
-                ArrayMinMax.First = a
-            ElseIf a > ArrayMinMax.Second Then
-                ArrayMinMax.Second = a
-            End If
-        Next
-    ElseIf Not IsArray(aArray) Then
-         ArrayMinMax.First = aArray
-         ArrayMinMax.Second = ArrayMinMax.First
-    End If
-End Function
-
 Public Function ArrayPopBack( _
     ByRef aArray As Variant _
 ) As Variant
@@ -306,23 +220,6 @@ Public Sub ArrayPushFront( _
     ArrayRotateRight aArray
 End Sub
 
-Public Function ArrayRange( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the arithmatic range of elements in a one-
-    ' dimensional array. No type checking is performed.
-    ' An error occurs if the elements are non-numeric types.
-    ' The behavior is undefined if aArray is not a one-
-    ' dimensional array or the array elements are not
-    ' primitive types.
-    '
-    Dim range As Pair
-    
-    range = ArrayMinMax(aArray)
-    ArrayRange = range.Second - range.First
-End Function
-
 Public Function ArrayRemove( _
     ByRef aArray As Variant, _
     ByVal aPosition As Long, _
@@ -331,7 +228,8 @@ Public Function ArrayRemove( _
     '
     ' Removes aCount array elements begining at aPosition.
     ' Decreases the array size by aCount. No type or bounds
-    ' checking is performed.
+    ' checking is performed. The behavior is undefined if
+    ' aArray is not a dynamic array.
     '
     If aCount > 0 Then
         Dim i As Long, First As Long, last As Long, sz As Long
@@ -379,7 +277,7 @@ Public Function ArrayRotateLeft( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Rotates the contents of an array aCount elements to the left,
+    ' Rotates the contents of aArray aCount elements to the left,
     ' wrapping the left-most element to the right-most element.
     ' If aCount is negative then calls ArrayRotateRight() with the
     ' absolute value of aCount. No type-checking is performed. The
@@ -405,7 +303,7 @@ Public Function ArrayRotateRight( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Rotates the contents of an array aCount elements to the right,
+    ' Rotates the contents of aArray aCount elements to the right,
     ' wrapping the right-most element to the left-most element.
     ' If aCount is negative then calls ArrayRotateLeft() with the
     ' absolute value of aCount. No type-checking is performed. The
@@ -450,7 +348,7 @@ Public Function ArrayShiftLeft( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array aCount elements to the left.
+    ' Shifts the contents of aArray aCount elements to the left.
     ' The right-most element is set to its default value. If aCount
     ' is negative then calls ArrayShiftRight() with the absolute
     ' value of aCount. No type checking is performed. The behavior
@@ -488,7 +386,7 @@ Public Function ArrayShiftRight( _
     Optional ByVal aCount As Integer = 1 _
 ) As Variant
     '
-    ' Shifts the contents of an array aCount elements to the right.
+    ' Shifts the contents of aArray aCount elements to the right.
     ' The left-most element is set to its default value. If aCount
     ' is negative then calls ArrayShiftLeft() with the absolute
     ' value of aCount. No type checking is performed. The behavior
@@ -525,7 +423,7 @@ Public Function ArraySize( _
     aArray As Variant _
 ) As Long
     '
-    ' Returns the size of an array in elements.
+    ' Returns the size of aArray in elements.
     ' Returns 0 if aArray is an unallocated
     ' array or not an array.
     '
@@ -594,23 +492,6 @@ Public Function ArraySorted( _
     End If
 End Function
 
-Public Function ArraySum( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the arithmatic sum of elements in a one-
-    ' dimensional array. No type checking is performed.
-    ' The behavior is undefined if aArray is not a one-
-    ' dimensional array or the array elements are non-
-    ' numeric.
-    '
-    Dim a As Variant
-    
-    For Each a In aArray
-        ArraySum = ArraySum + a
-    Next
-End Function
-
 Public Function ArrayToCsv( _
     aArray As Variant, _
     Optional ByVal aDelim As String = "," _
@@ -618,70 +499,19 @@ Public Function ArrayToCsv( _
     '
     ' Returns the elements of aArray as a delimited string.
     ' aArray must be convertible to an array of type String.
+    ' Uninitialized arrays or objects that are not arrays
+    ' return zero-length strings. Uninitialized or Null
+    ' elements are assigned as zero-length strings in the
+    ' returned string.
     '
-    ArrayToCsv = Join(aArray, aDelim)
-End Function
-
-Public Function MaxOf( _
-    ParamArray aArgs() As Variant _
-) As Variant
-    '
-    ' Returns the largest value from the given arguments.
-    '
-    If Not IsMissing(aArgs) Then MaxOf = ArrayMax(CVar(aArgs))
-End Function
-
-Public Function MinMaxOf( _
-    ParamArray aArgs() As Variant _
-) As Pair
-    '
-    ' Returns the smallest and largest values from the given argumments
-    ' as a Pair, where .First = smallest, .Second = largest.
-    '
-    If Not IsMissing(aArgs) Then MinMaxOf = ArrayMinMax(CVar(aArgs))
-End Function
-
-Public Function MinOf( _
-    ParamArray aArgs() As Variant _
-) As Variant
-    '
-    ' Returns the smallest value from the given argumments.
-    '
-    If Not IsMissing(aArgs) Then MinOf = ArrayMin(CVar(aArgs))
-End Function
-
-Public Function ParamArrayParam( _
-    aArray As Variant _
-) As Variant
-    '
-    ' Returns the first element of aArray or Empty if
-    ' the array size = 0. This function can reverse
-    ' the effects of ParamArrayDelegate(), and call
-    ' functions with any number of discrete parameters,
-    ' by calling this function once for each expected
-    ' parameter, including optional parameters. For
-    ' example:
-    '
-    '   Function foo(arg0,arg1,arg2)        ' A target function
-    '       ...
-    '   End Function
-    '   Function bar(arg0)                  ' Another target function
-    '       ...
-    '   End Function
-    '
-    '   Function foobar(target, ParamArray args())  ' A function that takes a ParamArray and delegates calls
-    '       dim a()
-    '       a=ParamArrayDelegate(args)
-    '       Select Case target
-    '           Case "foo":
-    '               foobar = foo(ParamArrayParam(a),ParamArrayParam(a),ParamArrayParam(a))    ' <-- The magick.
-    '           Case "bar":
-    '               foobar = bar(ParamArrayParam(a))  ' <--
-    '       End Select
-    '   End Function
-    '
-    On Error Resume Next
-    ParamArrayParam = ArrayPopFront(aArray)
+    If ArraySize(aArray) > 0 Then
+        Dim i As Long, item
+        
+        For i = LBound(aArray) To UBound(aArray)
+            If Not IsSomething(aArray(i)) Then aArray(i) = Empty
+        Next
+        ArrayToCsv = Join(aArray, aDelim)
+    End If
 End Function
 
 Public Function ParamToCsv( _
@@ -690,7 +520,7 @@ Public Function ParamToCsv( _
     '
     ' Returns the given arguments as a comma-separated string.
     '
-    If Not IsMissing(aArgs) Then ParamToCsv = Join(aArgs, ",")
+    If Not IsMissing(aArgs) Then ParamToCsv = ArrayToCsv(CVar(aArgs), ",")
 End Function
 
 Private Function SearchBinary( _

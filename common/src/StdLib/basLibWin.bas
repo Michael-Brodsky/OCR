@@ -525,17 +525,17 @@ Public Function ProcessWaitForExit( _
 '   WAIT_FAILED:    the wait failed because of a Windows API call error.
 '
     Dim status As Long
-    Dim start As Double
+    Dim Start As Double
     
     DoEvents
     If GetExitCodeProcess(aHprocess, status) = 0 Then
         ProcessWaitForExit = WAIT_FAILED
     Else
-        start = Timer()
+        Start = Timer()
         Do
             DoEvents
             GetExitCodeProcess aHprocess, status
-        Loop While status = PROCESS_STILL_ACTIVE And Not TimeoutMs(Timer(), start, aTimeout)
+        Loop While status = PROCESS_STILL_ACTIVE And Not TimeoutMs(Timer(), Start, aTimeout)
         If status = PROCESS_STILL_ACTIVE Then ProcessWaitForExit = WAIT_TIMEOUT
     End If
 End Function
