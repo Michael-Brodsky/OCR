@@ -1,1 +1,1 @@
-This folder contains debug and development versions of the MS OneNote-based libraries and applications.
+This folder contains source code for the MS OneNote-based libraries and applications.
