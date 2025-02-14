@@ -192,8 +192,8 @@ Public Sub ArrayPushBack( _
     aValue As Variant _
 )
     '
-    ' Appends an element after the last element of an
-    ' array. No type checking is performed. The behavior
+    ' Appends an element with aValue after the last element
+    ' of an array. No type checking is performed. The behavior
     ' is undefined if aArray is not a dynamic array.
     '
     Dim sz As Integer
@@ -212,9 +212,10 @@ Public Sub ArrayPushFront( _
     aValue As Variant _
 )
     '
-    ' Inserts an element before the first array element.
-    ' No type checking is performed. The behavior is
-    ' undefined if aArray is not a dynamic array.
+    ' Inserts an element with aValue before the first
+    ' array element.No type checking is performed. The
+    ' behavior is undefined if aArray is not a dynamic
+    ' array.
     '
     ArrayPushBack aArray, aValue
     ArrayRotateRight aArray

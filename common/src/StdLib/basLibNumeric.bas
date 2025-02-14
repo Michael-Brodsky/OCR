@@ -73,7 +73,7 @@ Public Const kvbTwipsPerInch As Long = 1440
 
 Public Function BitIsSet( _
     ByVal x As Long, _
-    ByVal aBit As Byte _
+    ByVal n As Byte _
 ) As Boolean
     '
     ' Returns TRUE if the nth bit of x is set,
@@ -81,7 +81,7 @@ Public Function BitIsSet( _
     '
     Dim mask As Long
     
-    mask = 2 ^ aBit
+    mask = 2 ^ n
     BitIsSet = (mask And x) = mask
 End Function
 
@@ -145,7 +145,7 @@ Public Function IPow2Ge( _
 ) As Long
     '
     ' Returns the smallest integral power-of-two equal
-    ' to or greater than the absolute value of x.
+    ' to or greater than the absolute value of n.
     '
     IPow2Ge = Int(2 ^ (Int(Log2(Abs(n) - 1)) + 1))
 End Function
@@ -154,7 +154,7 @@ Public Function IsEven( _
     ByVal n As Long _
 ) As Boolean
     '
-    ' Returns TRUE if x is an even integral number, else returns FALSE.
+    ' Returns TRUE if n is an even integral number, else returns FALSE.
     '
     IsEven = (n Mod 2 = 0)
 End Function
@@ -163,7 +163,7 @@ Public Function IsOdd( _
     ByVal n As Long _
 ) As Boolean
     '
-    ' Returns TRUE if x is an odd integral number, else returns FALSE.
+    ' Returns TRUE if n is an odd integral number, else returns FALSE.
     '
     IsOdd = Not IsEven(n)
 End Function
@@ -172,7 +172,7 @@ Public Function IsPow2( _
     ByVal n As Long _
 ) As Boolean
     '
-    ' Returns TRUE if the absolute value of x is an
+    ' Returns TRUE if the absolute value of n is an
     ' integral power of two, else returns FALSE.
     '
     MakeUnsigned n
@@ -194,10 +194,10 @@ Public Function MakeUnsigned( _
     ByRef n As Variant _
 ) As Variant
     '
-    ' Assigns the absolute value of x to x for procedures
-    ' that expect arguments of unsigned integral types. An
-    ' error occurs if x is the underlying type's minimum
-    ' value or non-numeric.
+    ' Assigns the absolute value of n to n for procedures
+    ' that expect arguments of unsigned types. An error
+    ' occurs if n is the underlying type's minimum value
+    ' or non-numeric.
     '
     n = Abs(n)
 End Function
@@ -228,7 +228,7 @@ Public Function MaxOf( _
     ParamArray aValues() As Variant _
 ) As Variant
     '
-    ' Returns the largest value from the given aValues.
+    ' Returns the largest of the given aValues.
     '
     If Not IsMissing(aValues) Then MaxOf = Max(CVar(aValues))
 End Function
@@ -320,7 +320,7 @@ Public Function MinOf( _
     ParamArray aValues() As Variant _
 ) As Variant
     '
-    ' Returns the smallest value from the given aValues.
+    ' Returns the smallest of the given aValues.
     '
     If Not IsMissing(aValues) Then MinOf = Min(CVar(aValues))
 End Function
@@ -367,13 +367,13 @@ Public Function ModeOf( _
 End Function
 
 Public Sub NegateIf( _
-    ByRef x As Double, _
+    ByRef n As Double, _
     ByVal aFlag As Boolean _
 )
     '
-    ' Negates x if aFlag is set.
+    ' Negates n if aFlag is set.
     '
-    x = x * SignOf(aFlag)
+    n = n * SignOf(aFlag)
 End Sub
 
 Public Function Normalize( _
@@ -442,21 +442,21 @@ Public Function RangeOf( _
 End Function
 
 Public Function Sign( _
-    ByVal x As Double _
+    ByVal n As Double _
 ) As Integer
     '
-    ' Returns -1 if x is less than 0, else returns 0.
+    ' Returns -1 if n is less than 0, else returns 0.
     '
-    Sign = (x < 0)
+    Sign = (n < 0)
 End Function
 
 Public Function SignOf( _
-    ByVal x As Double _
+    ByVal n As Double _
 ) As Integer
     '
-    ' Returns -1 if x is less than 0, else returns +1.
+    ' Returns -1 if n is less than 0, else returns +1.
     '
-    SignOf = 1 Or Sign(x)
+    SignOf = 1 Or Sign(n)
 End Function
 
 Public Function StdDev( _

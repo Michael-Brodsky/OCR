@@ -54,7 +54,7 @@ Public Function ArcCos( _
 ) As Double
     '
     ' Returns the inverse cosine of a in radians, where
-    ' a in [-1,1].
+    ' a in (-1,1).
     '
     ArcCos = Atn(-a / Sqr(-a * a + 1)) + 2 * Atn(1)
 End Function
@@ -94,7 +94,7 @@ Public Function ArcSin( _
 ) As Double
     '
     ' Returns the inverse sine of a in radians, where
-    ' a in [-1,1]
+    ' a in (-1,1)
     '
     ArcSin = Atn(a / Sqr(-a * a + 1))
 End Function

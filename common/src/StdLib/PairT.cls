@@ -18,7 +18,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DESCRIPTION                                               '
 '                                                           '
-' This module defines a 2-tuple class.                      '
+' This module defines a 2-tuple storage class.              '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
