@@ -31,7 +31,7 @@ Option Explicit
 
 ' Aggregate type containing message information from a thread's message queue.
 ' Note: The Windows API declares this type as MSG, however it is renamed here
-' as WINMSG because the MSG token is too short and often conflicts with existing code.
+' to WINMSG because the MSG token is too short and often conflicts with existing code.
 Public Type WINMSG
     hwnd As Long                ' A handle to the window whose window procedure receives the message,
     message As Long             ' The message identifier,
@@ -199,7 +199,7 @@ Public Declare PtrSafe Function OpenProcess Lib "kernel32" ( _
 
 Public Declare PtrSafe Function PeekMessage Lib "user32" Alias "PeekMessageA" ( _
     ByRef lpMsg As WINMSG, _
-    ByVal hwnd As Long, _
+    ByVal hwnd As LongPtr, _
     ByVal wMsgFilterMin As Long, _
     ByVal wMsgFilterMax As Long, _
     ByVal wRemoveMsg As Long _
@@ -211,6 +211,10 @@ Public Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( 
     ByVal wParam As LongPtr, _
     lParam As Any _
 ) As LongPtr
+
+Public Declare PtrSafe Function SetForegroundWindow Lib "user32" ( _
+    ByVal hwnd As LongPtr _
+) As Long
 
 Public Declare PtrSafe Function SetEnvironmentVariable Lib "kernel32" Alias "SetEnvironmentVariableA" ( _
     ByVal lpName As String, _
@@ -384,6 +388,10 @@ Public Const SW_SHOWDEFAULT = 10
 Public Const SW_FORCEMINIMIZE = 11
 Public Const SW_MAXIMIZE = SW_SHOWMAXIMIZED
 
+Public Const WA_ACTIVE = 1
+Public Const WA_CLICKACTIVE = 2
+Public Const WA_INACTIVE = 0
+
 Public Const WAIT_OBJECT_0 = &H0
 Public Const WAIT_ABANDONED = &H80
 Public Const WAIT_IO_COMPLETION = &HC0
@@ -410,6 +418,7 @@ Public Const WS_EX_TRANSPARENT = &H20
 Public Const WS_EX_WINDOWEDGE = &H100
 
 Public Const WM_NULL = &H0
+Public Const WM_ACTIVATE = &H6
 Public Const WM_CLOSE = &H10
 Public Const WM_QUIT = &H12
 
@@ -448,10 +457,10 @@ End Function
 Public Function HwndFromPartialText( _
     ByVal aText As String _
 ) As LongPtr
-'
-' Returns the window handle of the first window found having a
-' caption that partially matches the given text.
-'
+    '
+    ' Returns the window handle of the first window found having a
+    ' caption that partially matches the given text.
+    '
     Dim hwnd As LongPtr
     Dim txt As String
     
@@ -472,10 +481,10 @@ End Function
 Public Function PidToHwnd( _
     ByVal aPid As Long _
 ) As LongPtr
-'
-' Returns the window handle of the top-level window belonging
-' to the given process (task) id.
-'
+    '
+    ' Returns the window handle of the top-level window belonging
+    ' to the given process (task) id.
+    '
     Dim hwnd As LongPtr
     
     hwnd = FindWindow(vbNullString, vbNullString)
@@ -506,10 +515,10 @@ End Function
 Public Function HprocToHwnd( _
     ByVal aProc As LongPtr _
 ) As LongPtr
-'
-' Returns the window handle of the top-level window belonging
-' to the given process handle.
-'
+    '
+    ' Returns the window handle of the top-level window belonging
+    ' to the given process handle.
+    '
     HprocToHwnd = PidToHwnd(GetProcessId(aProc))
 End Function
 
@@ -517,13 +526,13 @@ Public Function ProcessWaitForExit( _
     ByVal aHprocess As LongPtr, _
     Optional ByVal aTimeout As Long = WAIT_INFINITE _
 ) As Long
-'
-' Waits for the process having the given process handle to terminate
-' for the given timeout period, in milliseconds, and returns one of:
-'   WAIT_OBJECT_0:  the process terminated successfully,
-'   WAIT_TIMEOUT:   the wait period timed out before the process terminated,
-'   WAIT_FAILED:    the wait failed because of a Windows API call error.
-'
+    '
+    ' Waits for the process having the given process handle to terminate
+    ' for the given timeout period, in milliseconds, and returns one of:
+    '   WAIT_OBJECT_0:  the process terminated successfully,
+    '   WAIT_TIMEOUT:   the wait period timed out before the process terminated,
+    '   WAIT_FAILED:    the wait failed because of a Windows API call error.
+    '
     Dim status As Long
     Dim Start As Double
     
@@ -540,6 +549,33 @@ Public Function ProcessWaitForExit( _
     End If
 End Function
 
+Private Function ProgramHwnd( _
+    ByVal aProgramName As String _
+) As LongPtr
+    '
+    ' Returns the given executable's first window handle, or 0
+    ' if the program isn't running or has no windows.
+    '
+    Dim result As Object, v As Variant
+    
+    Set result = GetObject("winmgmts:").ExecQuery("select * from win32_process where name='" & aProgramName & "'")
+    For Each v In result
+        ProgramHwnd = PidToHwnd(v.ProcessId)
+        If ProgramHwnd <> 0 Then Exit For
+    Next
+End Function
+
+Public Function ProgramIsRunning( _
+    ByVal aProgramName As String _
+) As Boolean
+    '
+    ' Returns TRUE if the given executable is running,
+    ' else returns FALSE.
+    '
+    ProgramIsRunning = (GetObject("winmgmts:") _
+    .ExecQuery("select * from win32_process where name='" & aProgramName & "'").count > 0)
+End Function
+
 Public Function ShellEx( _
     ByVal aFile As String, _
     Optional ByVal aShowCmd As Integer = vbNormalFocus, _
@@ -550,17 +586,17 @@ Public Function ShellEx( _
     Optional ByVal aTimeout As Long = 0, _
     Optional ByVal aFlags As Long = SEE_MASK_NOCLOSEPROCESS _
 ) As Long
-'
-' An extended version of the VBA built-in Shell() function that takes
-' optional parameters, similar to ShellExecute(), and a timeout
-' parameter that, when non-zero, waits for the shelled application to
-' finish before returning to the caller. If the ShellEx() function
-' successfully executes the named file, it returns the process (task)
-' ID of the started program, unless a timeout is specified, where it
-' returns 0 after the program completes. If the ShellEx() function can't
-' start the named program, an error occurs. If a timeout occurs, the
-' valid process id is returned so the caller can close the program.
-'
+    '
+    ' An extended version of the VBA built-in Shell() function that takes
+    ' optional parameters, similar to ShellExecute(), and a timeout
+    ' parameter that, when non-zero, waits for the shelled application to
+    ' finish before returning to the caller. If the ShellEx() function
+    ' successfully executes the named file, it returns the process (task)
+    ' ID of the started program, unless a timeout is specified, where it
+    ' returns 0 after the program completes. If the ShellEx() function can't
+    ' start the named program, an error occurs. If a timeout occurs, the
+    ' valid process id is returned so the caller can close the program.
+    '
     Dim info As SHELLEXECUTEINFO
     
     On Error GoTo Finally
@@ -594,14 +630,18 @@ Public Function ShellEx( _
         End If
         
 Finally:
-        If .hprocess <> 0 Then CloseHandle .hprocess
-        If Err.Number <> 0 Then Err.Raise Err.Number
+    If .hprocess <> 0 Then CloseHandle .hprocess
+    If Err.Number <> 0 Then Err.Raise Err.Number
     End With
 End Function
 
 Public Function WindowHasPopup( _
     ByVal aHwnd As LongPtr _
 ) As Boolean
+    '
+    ' Returns TRUE if the given window handle has a child window
+    ' that is a popup, else returns FALSE.
+    '
     Dim child As LongPtr
     
     child = GetWindow(aHwnd, GW_CHILD)  'Find Child
