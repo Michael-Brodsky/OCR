@@ -1,1 +1,1 @@
-This folder contains DOCUFILE_W libraries.
+This folder contains DOCUFILE_W library databases.
