@@ -113,7 +113,7 @@ Private boolInterrupt As Boolean    ' Flag indicating that the process has been 
 
 Public Sub ocrReset()
     '
-    ' Resets the program into a know state.
+    ' Resets the program into a known state.
     '
     boolInterrupt = False
 End Sub
@@ -123,6 +123,9 @@ Public Function ocrStart( _
     Optional aCallback As CallbackT = Nothing, _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Long
+    '
+    ' Starts the program.
+    '
     Dim processes As New RsActiveProcessesT
     
     processes.Open_
@@ -172,6 +175,10 @@ Private Function ocrCatalogFile( _
     Optional aCallback As CallbackT = Nothing, _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Boolean
+    '
+    ' Top-level cataloging procedure. Converts a source file to text, extracts and
+    ' stores file data in the catalog and moves the file to a storage location.
+    '
     Dim sourcePath As String, destinationPath As String, ocrdata() As Variant, ocrFile As String, _
     intrans As Boolean, retry As Boolean, msg As String
     
@@ -311,7 +318,7 @@ Private Function ocrFileConvert( _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As String
     '
-    ' Calls the ocr engine to convert a source file into an ocr text file.
+    ' Calls the ocr engine to convert a source file into a text file.
     '
     ocrFileConvert = aOcrConvert.Exec(aFilePath)
     If ocrFileConvert = "" Then Err.Raise UsrErr(kOcrErrFileConversion), CurrentProject.Name, kStrFileConversion
@@ -332,7 +339,8 @@ Private Function ocrGetCatalog( _
     ' connection database so that the storage procedure can be called in
     ' that database. Otherwise we return the current application instance
     ' since the catalog database is either the current or an ODBC database,
-    ' and storage procedures can only be called from the the current db.
+    ' and in those cases, storage procedures can only be called from the 
+    ' the current db.
     '
     Select Case ocrStorageMethod(aProcessInfo.SaveToTable, aProcessInfo.SaveToProcedure)
         Case osmBuiltIn:
@@ -434,6 +442,9 @@ Private Function ocrProcessStart( _
     Optional aCallback As CallbackT = Nothing, _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Long
+    '
+    ' Executes the given cataloging process.
+    '
     Dim connection As DAOConnectionT, procinfo As New RsProcessInfoT, rules As New RsProcessDataRulesT, _
     catalog As Object, ws As DAO.Workspace, retry As Boolean
     
@@ -461,7 +472,6 @@ Finally:
     Set catalog = Nothing
     Set ws = Nothing
     Exit Function
-
 Catch:
     Select Case ocrErrorHandler(aOnError, retry)
         Case vbAbort:
