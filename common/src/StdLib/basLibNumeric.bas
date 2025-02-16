@@ -261,7 +261,7 @@ Public Function Min( _
     '
     ' Returns the smallest element in a one-dimensional array
     ' using the less than < operator. No type checking is
-    ' performed. The behavior is undefined aValues is not a
+    ' performed. The behavior is undefined if aValues is not a
     ' one-dimensional array or the array elements are not
     ' primitive types.
     '
