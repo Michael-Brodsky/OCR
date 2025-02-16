@@ -105,7 +105,7 @@ Public Const kOcrTableSearchDefs As String = "~tblSearchDefs"
 ' Module-Level Objects '
 ''''''''''''''''''''''''
 
-Private boolInterrupt As Boolean    ' Flag indicating that the process has been interrupted.
+Private boolInterrupt As Boolean    ' Flag indicating that the program has been interrupted.
 
 ''''''''''''''''''''
 ' Public Interface '
