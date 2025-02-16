@@ -18,7 +18,7 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DESCRIPTION                                               '
 '                                                           '
-' This module defines a class that encapsulates a DAO.      '
+' This module defines a class that encapsulates a DAO       '
 ' Recordset holding information about a cataloging process  '
 ' data extraction and storage rules, that is accessible     '
 ' using dot notation.                                       '
@@ -37,7 +37,7 @@ Attribute VB_Exposed = True
 Option Compare Binary
 Option Explicit
 
-Private Data As DAORecordsetT
+Private Data As DAORecordsetT   ' The underlying recordset.
 
 Public Property Get BOF() As Boolean
     BOF = Data.BOF

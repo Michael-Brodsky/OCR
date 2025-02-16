@@ -65,7 +65,7 @@ End Enum
 ' Enumerates valid catalog data storage methods.
 Public Enum DataStorageMethod
     osmNone = 0     ' Indicates a bad or missing method,
-    osmBuiltIn = 1  ' Use database.recordset methods,
+    osmBuiltIn = 1  ' Use database recordset methods,
     osmCustom = 2   ' Call a user-defined procedure.
 End Enum
 
@@ -75,6 +75,7 @@ Private Const kStrDuplicateIndex As String = "Duplicate source file"
 Private Const kStrFileEmpty As String = "Converted file is empty"
 Private Const kStrFileExists As String = "Catalog file already exists"
 Private Const kStrNotFound As String = " not found"
+Private Const kStrNoDataRules As String = "Process has no data storage rules"
 Private Const kStrNoStorageMethod As String = "No storage method"
 Private Const kStrNoSaveToMethod As String = "No save to method"
 Private Const kStrNoRequiredData As String = "No required ocr data defined"
@@ -85,9 +86,9 @@ Public Const kOcrErrDataNotFound = 10000        ' Required data not found in sou
 Public Const kOcrErrFileNoData = 10001          ' Source file has no text.
 Public Const kOcrErrTimeout = 10002             ' Process timed out.
 Public Const kOcrErrFileExists = 10003          ' Source file already exists in the catalog SaveTo Path.
-Public Const kOcrErrFileConversion = 10004      ' Source file could not be converted to text.
-Public Const kOcrErrNoSaveToMethod = 10005      ' Required ocr data rule has no storage method.
-Public Const kOcrErrNoStorageMethod = 10006     ' Required ocr data rule has no storage method.
+Public Const kOcrErrFileConversion = 10004      ' A source file conversion error occurred.
+Public Const kOcrErrProcessNoRules = 10005      ' Process has no data storage rules.
+Public Const kOcrErrNoStorageMethod = 10006     ' Ocr data rule has no storage method.
 Public Const kOcrErrNoRequiredData = 10007      ' Process has no required ocr data rule.
 Public Const kOcrErrPatternInvalid = 10008      ' Bad or missing pattern match parameters.
 Public Const kOcrErrStorageMethodFailed = 10009 ' Data storage method failed.
@@ -105,7 +106,7 @@ Public Const kOcrTableSearchDefs As String = "~tblSearchDefs"
 ' Module-Level Objects '
 ''''''''''''''''''''''''
 
-Private boolInterrupt As Boolean    ' Flag indicating that the program has been interrupted.
+Private boolInterrupt As Boolean    ' Flag indicating that the process has been interrupted.
 
 ''''''''''''''''''''
 ' Public Interface '
@@ -113,7 +114,7 @@ Private boolInterrupt As Boolean    ' Flag indicating that the program has been 
 
 Public Sub ocrReset()
     '
-    ' Resets the program into a known state.
+    ' Resets the program into a know state.
     '
     boolInterrupt = False
 End Sub
@@ -124,7 +125,7 @@ Public Function ocrStart( _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Long
     '
-    ' Starts the program.
+    ' Starts the program with the given arguments.
     '
     Dim processes As New RsActiveProcessesT
     
@@ -176,32 +177,32 @@ Private Function ocrCatalogFile( _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Boolean
     '
-    ' Top-level cataloging procedure. Converts a source file to text, extracts and
-    ' stores file data in the catalog and moves the file to a storage location.
+    ' Top-level file cataloging procedure. Converts a source
+    ' file to text, extracts and stores any data and moves
+    ' the file to a storage location.
     '
-    Dim sourcePath As String, destinationPath As String, ocrdata() As Variant, ocrFile As String, _
+    Dim sourcePath As String, destinationPath As String, ocrdata() As Variant, ocrText As String, _
     intrans As Boolean, retry As Boolean, msg As String
     
     On Error GoTo Catch
     retry = False
+    ' Generate the full source and destination file paths.
     sourcePath = PathBuild(aProcessInfo.SearchPath, aSourceFile)
     destinationPath = IIf(aProcessInfo.SaveToPath <> "", PathBuild(aProcessInfo.SaveToPath, aSourceFile), sourcePath)
     ' Make sure the destination file doesn't already exist.
     If (destinationPath <> sourcePath) And FileExists(destinationPath) Then _
     Err.Raise UsrErr(kOcrErrFileExists), CurrentProject.Name, kStrFileExists
 Try:
-    ' If necessary, convert the source file to text using the OCR engine.
-    ocrFile = ocrFileConvert(aOcrConvert, sourcePath)
+    ' Generate source file ocr text using the OCR engine.
+    ocrText = ocrFileConvert(aOcrConvert, sourcePath)
     aWorkspace.BeginTrans
     intrans = True
-    ' Extract and store data from ocr text, and move the source file to the destination path.
-    ocrdata = ocrStoreData(ocrFile, destinationPath, aProcessInfo, aProcessRules, aCatalog)
+    ' Extract and ocr data and move the source file to the destination path.
+    ocrdata = ocrStoreData(ocrText, destinationPath, aProcessInfo, aProcessRules, aCatalog)
     If sourcePath <> destinationPath Then FileMove sourcePath, destinationPath
     ' Only commit the transaction if the source file was successfully cataloged and moved.
     aWorkspace.CommitTrans
     intrans = False
-    ' Delete the ocr text file , if necessary.
-    If ocrFile <> sourcePath Then Kill ocrFile
     ocrCatalogFile = True
 Finally:
     ocrClientCallBack aCallback, octFile, aSourceFile, Trim(Join(ocrdata, ",")), msg
@@ -262,13 +263,14 @@ Private Function ocrErrorHandler( _
     Else
         Select Case Err.Number              ' ... otherwise check the error code.
             Case kvbErrDbDuplicateIndex, UsrErr(kOcrErrFileExists) To UsrErr(kOcrErrFileConversion), _
-            kvbErrFileNotFound, kvbErrFileAlreadyOpen, kvbErrFileAlreadyExists, _
-            kvbErrInputPastEndOfFile, kvbErrPermissionDenied, UsrErr(kOcrErrNoStorageMethod):
+            kvbErrFileNotFound, kvbErrFileAlreadyOpen, kvbErrFileAlreadyExists, UsrErr(kOcrErrFileExists), _
+            kvbErrInputPastEndOfFile, kvbErrPermissionDenied:
                 ocrErrorHandler = vbIgnore  ' Errors that shouldn't be retried.
-            Case UsrErr(kOcrErrStorageMethodFailed), UsrErr(kOcrErrNoSaveToMethod), kvbErrBadFilenameOrNumber, kvbErrDbItemNotFound, _
+            Case UsrErr(kOcrErrStorageMethodFailed), kvbErrBadFilenameOrNumber, kvbErrDbItemNotFound, UsrErr(kOcrErrProcessNoRules), _
             UsrErr(kOcrErrPatternInvalid), kvbErrCantRenameWithDifferentDrive, kvbErrPathNotFound, kvbErrPathFileAccessError, _
             kvbErrDbInvalidArgument To kvbErrDbFieldNotFound, kvbErrDbCantUpdateReadOnly To kvbErrDbObjectNoPermissions, _
-            kvbErrDbTableQueryNotFound, kvbErrDbOdbcCallFailed, UsrErr(kOcrErrNoStorageMethod), UsrErr(kOcrErrNoRequiredData):
+            kvbErrDbTableQueryNotFound, kvbErrDbOdbcCallFailed, UsrErr(kOcrErrNoStorageMethod), UsrErr(kOcrErrNoRequiredData), _
+            kvbErrDbFieldRequired To kvbErrDbValidationRuleViolation:
                 ocrErrorHandler = vbCancel  ' Errors that cancel the current process.
             Case UsrErr(kOcrErrDataNotFound) To UsrErr(kOcrErrTimeout)
                 aRetry = True
@@ -281,23 +283,22 @@ End Function
 
 Private Function ocrExtractData( _
     aProcessRules As RsProcessDataRulesT, _
-    ByVal aOcrFilePath As String, _
+    ByVal aOcrText As String, _
     ByRef aData As VectorT _
 ) As Variant()
     '
     ' Appends aData with aProcessRules.StorageField and corresponding
-    ' data extracted from aOcrFilePath, if any, and returns a list of
+    ' data extracted from aOcrText, if any, and returns a list of
     ' required data found.
     '
     If aProcessRules.Count > 0 Then
-        Dim ocrText As String, found() As Variant
+        Dim found() As Variant
         
-        ocrText = CreateObject("Scripting.FileSystemObject").OpenTextFile(aOcrFilePath).readAll
         aProcessRules.MoveFirst
         While Not aProcessRules.EOF
             Dim ocrValue As Variant
             
-            ocrValue = ocrGetValue(ocrText, aProcessRules.Pattern, aProcessRules.Match, aProcessRules.Submatch, _
+            ocrValue = ocrGetValue(aOcrText, aProcessRules.Pattern, aProcessRules.Match, aProcessRules.Submatch, _
             aProcessRules.IgnoreCase, aProcessRules.Global_)
             If IsEmpty(ocrValue) And aProcessRules.Required Then _
             Err.Raise UsrErr(kOcrErrDataNotFound), CurrentProject.Name, aProcessRules.Name & kStrNotFound
@@ -318,11 +319,13 @@ Private Function ocrFileConvert( _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As String
     '
-    ' Calls the ocr engine to convert a source file into a text file.
+    ' Returns any text generated by the ocr engine from the given file.
     '
+    On Error Resume Next    ' Any ocr engine errors are converted to our kOcrErrFileConversion error.
     ocrFileConvert = aOcrConvert.Exec(aFilePath)
-    If ocrFileConvert = "" Then Err.Raise UsrErr(kOcrErrFileConversion), CurrentProject.Name, kStrFileConversion
-    If FileEmpty(ocrFileConvert) Then Err.Raise UsrErr(kOcrErrFileNoData), CurrentProject.Name, kStrFileEmpty
+    On Error GoTo 0
+    If Err.Number <> 0 Then Err.Raise UsrErr(kOcrErrFileConversion), CurrentProject.Name, Err.Description
+    If ocrFileConvert = "" Then Err.Raise UsrErr(kOcrErrFileNoData), CurrentProject.Name, kStrFileEmpty
 End Function
 
 Private Function ocrGetCatalog( _
@@ -339,8 +342,8 @@ Private Function ocrGetCatalog( _
     ' connection database so that the storage procedure can be called in
     ' that database. Otherwise we return the current application instance
     ' since the catalog database is either the current or an ODBC database,
-    ' and in those cases, storage procedures can only be called from the 
-    ' the current db.
+    ' and in those cases storage procedures can only be called from the the
+    ' current db.
     '
     Select Case ocrStorageMethod(aProcessInfo.SaveToTable, aProcessInfo.SaveToProcedure)
         Case osmBuiltIn:
@@ -359,7 +362,7 @@ Private Function ocrGetCatalog( _
                 Set aWorkspace = ocrGetCatalog.DBEngine(0)
             End If
         Case osmNone:
-            Err.Raise UsrErr(kOcrErrNoSaveToMethod), CurrentProject.Name, kStrNoSaveToMethod
+            Err.Raise UsrErr(kOcrErrNoStorageMethod), CurrentProject.Name, kStrNoSaveToMethod
         Case Else:
     End Select
 End Function
@@ -414,23 +417,22 @@ Private Function ocrProcessFiles( _
     ' Searches for source files and passes them on for cataloging.
     '
     Dim fTypes() As String, ftype As Variant, intrans As Boolean, msg As String, retry As Boolean
-    
     fTypes = Split(aProcessInfo.FileTypes, ",")
     ' For each specified file type ...
     For Each ftype In fTypes
-        Dim fpath As String, sourceFile As String
+        Dim fpath As String, SourceFile As String
         
         ftype = "*." & ftype
         fpath = PathBuild(aProcessInfo.SearchPath, CStr(ftype))
         ocrClientCallBack aCallback, octSearch, aProcessInfo.SearchName, aProcessInfo.SearchPath, FilesCount(fpath)
-        sourceFile = Dir(fpath)
+        SourceFile = Dir(fpath)
         ' ... search the source path and ...
-        While Not (Len(sourceFile) = 0 Or boolInterrupt)
+        While Not (Len(SourceFile) = 0 Or boolInterrupt)
             ' ... pass each file on for cataloging.
-            If ocrCatalogFile(sourceFile, aProcessInfo, aProcessRules, aOcrConvert, aWorkspace, aCatalog, aCallback, aOnError) Then _
+            If ocrCatalogFile(SourceFile, aProcessInfo, aProcessRules, aOcrConvert, aWorkspace, aCatalog, aCallback, aOnError) Then _
             ocrProcessFiles = ocrProcessFiles + 1
             DoEvents
-            sourceFile = Dir
+            SourceFile = Dir
         Wend
         DoEvents
     Next
@@ -443,7 +445,7 @@ Private Function ocrProcessStart( _
     Optional ByVal aOnError As VbMsgBoxResult = vbIgnore _
 ) As Long
     '
-    ' Executes the given cataloging process.
+    ' Executes a cataloging process.
     '
     Dim connection As DAOConnectionT, procinfo As New RsProcessInfoT, rules As New RsProcessDataRulesT, _
     catalog As Object, ws As DAO.Workspace, retry As Boolean
@@ -451,6 +453,7 @@ Private Function ocrProcessStart( _
     On Error GoTo Catch
     procinfo.Open_ aProcess.ID
     rules.Open_ aProcess.ID
+    If rules.Count = 0 Then Err.Raise UsrErr(kOcrErrProcessNoRules), CurrentProject.Name, kStrNoDataRules
     Set connection = NewDAOConnectionT(procinfo.connection)
 Try:
     Set catalog = ocrGetCatalog(procinfo, connection, ws)
@@ -542,7 +545,7 @@ Private Function ocrStoreCustom( _
 ) As Long
     '
     ' Calls a user-defined procedure to store catalog data.
-    ' Container is converted from a VectorT of PairTs to a
+    ' aValues is converted from a VectorT of PairTs to a
     ' an array with dimensions (n)(2), where n is the vector
     ' size.
     '
@@ -561,7 +564,7 @@ Catch:
 End Function
 
 Private Function ocrStoreData( _
-    ByVal aOcrFile As String, _
+    ByVal aOcrText As String, _
     ByVal aDestinationPath As String, _
     aProcessInfo As RsProcessInfoT, _
     aProcessRules As RsProcessDataRulesT, _
@@ -576,7 +579,7 @@ Private Function ocrStoreData( _
     On Error GoTo Catch
     Set fileData = NewVectorT()
     fileData.PushBack NewPairT(aProcessInfo.SaveToParameterField, aDestinationPath)
-    ocrStoreData = ocrExtractData(aProcessRules, aOcrFile, fileData)
+    ocrStoreData = ocrExtractData(aProcessRules, aOcrText, fileData)
     recID = ocrStorageDelegate(aCatalog, aProcessInfo, fileData)
     If IsSomething(fileData) Then fileData.Clear
     Set fileData = Nothing
