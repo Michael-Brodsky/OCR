@@ -38,7 +38,8 @@ Currently, the library and application databases have only been tested on Window
 64-bit implementations. The apps require that a setup procedure be run prior to use. The
 setup checks for and installs any dependencies, creates a simple file system and configures 
 the app to run in host computer's environment. The apps also come with sample source files 
-and a demo program that reads and catalogs them.
+and a demo program that reads and catalogs them. Contact the author for a self-extracting
+.zip file that contains all necessary components to install and setup the applications.
 
 Any database server that MS Access is able to establish an ODBC connection with can be 
 used for back-end data storage, including other Access databases, SQL Server, Azure and
