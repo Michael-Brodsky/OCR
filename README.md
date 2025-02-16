@@ -1,19 +1,19 @@
 # OCR
 Optical Character Recognition Database File Storage Solutions
 
-This repository contains several Microsoft Access database solutions for reading and cataloging
-electronic documents in a database. The library and application databases work with image 
-documents, such as scans and photos, extract identifying information and store that information 
-along with a link to the source document in a database. Clients can access the database and 
-provide users with means to search for and open the documents.
+This repository contains several Microsoft Access database solutions for storing digital copies 
+of paper documents in a database. The library and application databases can read photos and  
+scanned documents, extract identifying information and store that information along with links 
+to the source documents. Clients that access the database can provide users with means to search 
+for and view the documents.
 
 To read and extract information, the library databases convert source files to text using 
-optical character recognition (OCR) technology. Currently, two OCR engines are in use: OCR- 
+optical character recognition (OCR) technology. Currently, two OCR engines are used: OCR- 
 Tesseract and Microsoft OneNote. Tesseract is an open-source OCR engine and one of the most 
 reliable and effective available. It is hosted on Github: https://github.com/tesseract-ocr/tesseract. 
-MS OneNote is part of the MS Office suite and has OCR conversion capabilities built 
-in. Depending on source file format and quality, both technologies are nearly 100% successful
-at converting images to text.
+MS OneNote is part of the MS Office suite and has OCR capabilities built in. Depending on source 
+file format and quality, both technologies are nearly 100% successful at converting images to 
+text.
 
 Tesseract has the advantage of being much faster than OneNote, slightly more reliable at OCR 
 conversion and, most importantly, can run silently in the background without disturbing the 
@@ -24,8 +24,8 @@ by Tesseract. ImageMagick however requires the support of GPL GhostScript, which
 installed on the host computer.
 
 OneNote has the advantage of being part of the MS Office suite and thus requires no further
-licensing or installation of third-party software. It's main disadvantages are its speed that 
-it cannot run silently in the background, essentially taking over the user's desktop. This 
+licensing or installation of third-party software. It's main disadvantages are its speed and 
+that it cannot run silently in the background, essentially taking over the user's desktop. This 
 is especially troublesome when cataloging Adobe pdf files as Adobe has removed the silent 
 printing option from Acrobat and so Acrobat and OneNote contiuously switch back and forth from 
 being the top-level window, even if the user clicks on another window. This prevents users 
