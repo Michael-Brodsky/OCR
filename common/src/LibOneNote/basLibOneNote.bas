@@ -21,7 +21,7 @@ Attribute VB_Name = "basLibOneNote"
 ' NOTES                                                     '
 '                                                           '
 ' This version of the library has only been tested with     '
-' MS ONENOTE 365 (64-bit) implementations.                  '
+' MS ONENOTE 365 (64-bit) implementations.                   '
 '                                                           '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -40,39 +40,40 @@ Public Const XML_SCHEMA = xs2013
 '''''''''''''''''''''
 
 Public Function oneCreateNotebook( _
-    ByVal aNotebook As String, _
+    ByVal aNotebookName As String, _
     aOneNote As OneNote.Application, _
     Optional ByVal aLocation As String = "" _
 ) As String
     '
-    ' Creates a OneNote notebook with the given notebook name,
-    ' optionally in the specified location. If omitted, OneNote
-    ' uses its default location. Returns the notebook name.
+    ' Creates a OneNote notebook with the given aNotebookName,
+    ' optionally in the specified aLocation. If omitted, OneNote
+    ' uses its default location. Returns the created notebook name.
     '
     If Len(aLocation) = 0 Then aOneNote.GetSpecialLocation slDefaultNotebookFolder, aLocation
-    aLocation = aLocation & "\" & aNotebook
+    aLocation = aLocation & "\" & aNotebookName
     aOneNote.OpenHierarchy aLocation, vbNullString, oneCreateNotebook, cftNotebook
-    oneCreateNotebook = aNotebook
+    oneCreateNotebook = aNotebookName
 End Function
 
 Public Function oneCreateSection( _
-    ByVal aSection As String, _
-    ByVal aNotebook As String, _
+    ByVal aSectionName As String, _
+    ByVal aNotebookName As String, _
     aOneNote As OneNote.Application _
 ) As String
     '
-    ' Creates a OneNote notebook section with the given section name,
-    ' in the named notebook. Returns the section name.
+    ' Creates a OneNote notebook section with the given aSectionName,
+    ' in the notebook named aNotebookName. Returns the created section
+    ' name.
     '
     Dim notebook As MSXML2.IXMLDOMNode
     
-    Set notebook = oneGetNotebook(aNotebook, aOneNote)
+    Set notebook = oneGetNotebook(aNotebookName, aOneNote)
     If Not notebook Is Nothing Then
         Dim path As String
         
-        path = oneGetNodeAttr(notebook, "path") & "\" & aSection & ".one"
+        path = oneGetNodeAttr(notebook, "path") & "\" & aSectionName & ".one"
         aOneNote.OpenHierarchy path, vbNullString, oneCreateSection, cftSection
-        oneCreateSection = aSection
+        oneCreateSection = aSectionName
     End If
     Set notebook = Nothing
 End Function
@@ -82,7 +83,7 @@ Public Function oneGetDocument( _
     aOneNote As OneNote.Application _
 ) As MSXML2.DOMDocument60
     '
-    ' Returns a DOMDocument from the given xml string.
+    ' Returns a DOMDocument from the given aXml string.
     '
     Dim doc As New MSXML2.DOMDocument60
     
@@ -100,7 +101,7 @@ Public Function oneGetHeirarchy( _
 ) As MSXML2.DOMDocument60
     '
     ' Returns a DOMDocument containing the heirarchy of the given
-    ' scope starting at the given node id.
+    ' aScope starting at the given aNodeId.
     '
     Dim xml As String
     
@@ -113,7 +114,7 @@ Public Function oneGetNodeAttr( _
     Optional ByVal aAttribute As String = "ID" _
 ) As String
     '
-    ' Returns the given attribute value of the given node. If
+    ' Returns the given aAttribute value of the given aNode. If
     ' attribute is omitted, then returns the "ID" attribute.
     '
     oneGetNodeAttr = aNode.Attributes.getNamedItem(aAttribute).Text
@@ -125,23 +126,23 @@ Public Function oneSetNodeAttr( _
     ByVal aText As String _
 ) As String
     '
-    ' Sets the given attribute value of the given node and returns
-    ' the given value.
+    ' Sets the given aAttribute value of the given aNode to aText
+    ' and returns the value.
     '
     aNode.Attributes.getNamedItem(aAttribute).Text = aText
     oneSetNodeAttr = aNode.Attributes.getNamedItem(aAttribute).Text
 End Function
 
 Public Function oneGetNotebook( _
-    ByVal aNotebook As String, _
+    ByVal aNotebookName As String, _
     aOneNote As OneNote.Application _
 ) As MSXML2.IXMLDOMNode
     '
     ' Returns the notebook node whose name attribute matches the given
-    ' notebook name.
+    ' aNotebookName.
     '
     Set oneGetNotebook = oneGetHeirarchy("", hsNotebooks, aOneNote).documentElement _
-    .selectSingleNode("//one:Notebook[@name='" & aNotebook & "']")
+    .selectSingleNode("//one:Notebook[@name='" & aNotebookName & "']")
 End Function
 
 Public Function oneGetNotebooks( _
@@ -155,15 +156,15 @@ End Function
 
 Public Function oneGetSection( _
     aNotebookID As String, _
-    aSection As String, _
+    aSectionName As String, _
     aOneNote As OneNote.Application _
 ) As MSXML2.IXMLDOMNode
     '
-    ' Returns the section node whose name attribute matches the given section
-    ' and that is a child of the given notebook id.
+    ' Returns the section node whose name attribute matches the given aSectionName
+    ' and that is a child of the notebook node with the given aNotebookID.
     '
     Set oneGetSection = oneGetHeirarchy(aNotebookID, hsSections, aOneNote).documentElement _
-    .selectSingleNode("//one:Section[@name='" & aSection & "']")
+    .selectSingleNode("//one:Section[@name='" & aSectionName & "']")
 End Function
 
 Public Function oneGetSections( _
@@ -172,7 +173,7 @@ Public Function oneGetSections( _
 ) As MSXML2.IXMLDOMNodeList
     '
     ' Returns a collection of section nodes that are children of the
-    ' given notebook id.
+    ' notebook node with the given aNotebookID.
     '
     Set oneGetSections = oneGetHeirarchy(aNotebookID, hsSections, aOneNote).documentElement _
     .selectNodes("//one:Section")
@@ -180,15 +181,15 @@ End Function
 
 Public Function oneGetPage( _
     ByVal aSectionId As String, _
-    ByVal aPage As String, _
+    ByVal aPageName As String, _
     aOneNote As OneNote.Application _
 ) As MSXML2.IXMLDOMNode
     '
-    ' Returns a page node whose name attribute matches the given name
-    ' and that is a child of the given section id.
+    ' Returns a page node whose name attribute matches the given aPageName
+    ' and that is a child of the section node with the given aSectionId.
     '
     Set oneGetPage = oneGetHeirarchy(aSectionId, hsPages, aOneNote).documentElement _
-    .selectSingleNode("//one:Page[@name='" & aPage & "']")
+    .selectSingleNode("//one:Page[@name='" & aPageName & "']")
 End Function
 
 Public Function oneGetPages( _
@@ -197,7 +198,7 @@ Public Function oneGetPages( _
 ) As MSXML2.IXMLDOMNodeList
     '
     ' Returns a collection of page nodes that are children of the
-    ' given section id.
+    ' section node with the given aSectionId.
     '
     Set oneGetPages = oneGetHeirarchy(aSectionId, hsPages, aOneNote).documentElement _
     .selectNodes("//one:Page")
@@ -210,7 +211,7 @@ Public Function oneGetChildren( _
 ) As MSXML2.IXMLDOMNodeList
     '
     ' Returns a collection of nodes that are children of the
-    ' given page id.
+    ' node with the given aPageId.
     '
     Set oneGetChildren = oneGetHeirarchy(aPageId, hsChildren, aOneNote).documentElement _
     .selectNodes(aNodeType)
@@ -223,7 +224,7 @@ Public Sub oneDeletePage( _
 )
     '
     ' Deletes the page node whose ID attribute matches the
-    ' given page id.
+    ' given aPageId.
     '
     aOneNote.DeleteHierarchy aPageId, , aPermanetly
 End Sub
@@ -235,7 +236,7 @@ Public Sub oneDeletePages( _
 )
     '
     ' Deletes all page nodes that are children of the section
-    ' whose ID attribute matches the given section id.
+    ' whose ID attribute matches the given aSectionId.
     '
     Dim pages As MSXML2.IXMLDOMNodeList
     Dim page As MSXML2.IXMLDOMNode
