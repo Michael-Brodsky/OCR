@@ -31,7 +31,7 @@ Option Explicit
 
 ' Aggregate type containing message information from a thread's message queue.
 ' Note: The Windows API declares this type as MSG, however it is renamed here
-' to WINMSG because the MSG token is too short and often conflicts with existing code.
+' as WINMSG because the MSG token is too short and often conflicts with existing code.
 Public Type WINMSG
     hwnd As Long                ' A handle to the window whose window procedure receives the message,
     message As Long             ' The message identifier,
@@ -528,7 +528,7 @@ Public Function ProcessWaitForExit( _
 ) As Long
     '
     ' Waits for the process having the given process handle to terminate
-    ' for the given timeout period, in milliseconds, and returns one of:
+    ' in the given timeout period, in milliseconds, and returns one of:
     '   WAIT_OBJECT_0:  the process terminated successfully,
     '   WAIT_TIMEOUT:   the wait period timed out before the process terminated,
     '   WAIT_FAILED:    the wait failed because of a Windows API call error.

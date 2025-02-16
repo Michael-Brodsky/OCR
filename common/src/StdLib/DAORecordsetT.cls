@@ -41,7 +41,7 @@ Option Explicit
 ' Private Members '
 '''''''''''''''''''
 
-Private rst As DAO.Recordset
+Private rst As DAO.Recordset    ' The underlying recordset.
 
 ''''''''''''''''''''
 ' Public Interface '

@@ -423,15 +423,6 @@ Public Property Get Size() As Long
     Size = CSize
 End Property
 
-Private Property Let Size( _
-    ByVal aSize As Long _
-)
-    '
-    ' Assigns the container Size to aSize elements.
-    '
-    CSize = aSize
-End Property
-
 Public Sub Swap( _
     ByRef aOther As ContainerT _
 )
@@ -448,5 +439,16 @@ Public Sub Swap( _
     Data = tmpData
 End Sub
 
+'''''''''''''''''''''
+' Private Interface '
+'''''''''''''''''''''
 
+Private Property Let Size( _
+    ByVal aSize As Long _
+)
+    '
+    ' Assigns aSize to the container Size in elements.
+    '
+    CSize = aSize
+End Property
 

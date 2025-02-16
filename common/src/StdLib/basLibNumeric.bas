@@ -261,7 +261,7 @@ Public Function Min( _
     '
     ' Returns the smallest element in a one-dimensional array
     ' using the less than < operator. No type checking is
-    ' performed. The behavior is undefined if aValues is not a
+    ' performed. The behavior is undefined aValues is not a
     ' one-dimensional array or the array elements are not
     ' primitive types.
     '
@@ -384,7 +384,7 @@ Public Function Normalize( _
     ByVal yMax As Double _
 ) As Double
     '
-    ' Normalizes x in [xmin,xmax] to x in [ymin,ymax].
+    ' Normalizes x in [xMin,xMax] to x in [yMin,yMax].
     ' The function is ill-formed if xMin >= xMax or
     ' yMin >= yMax.
     '

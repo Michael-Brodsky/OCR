@@ -124,7 +124,7 @@ Public Function ArrayInsert( _
     '
     ' Inserts aCount array elements of aValue begining at aPosition.
     ' No type checking is performed. Increases the array size by
-    ' aCount. An error occurs if aPosition past the end.
+    ' aCount. An error occurs if aPosition is past the end.
     '
     Dim i As Long, last As Long
 
@@ -554,7 +554,7 @@ Private Function SearchSequential( _
     aArray As Variant _
 ) As Variant
     '
-    ' Searches each elelment of a one-dimensional array
+    ' Searches each element of a one-dimensional array
     ' for aArray and returns the value if found.
     '
     Dim elem As Variant

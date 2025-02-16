@@ -16,7 +16,7 @@ Attribute VB_Name = "basLibVBA"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibWin                                                    '
+' LibWin, LibNumeric                                        '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -177,6 +177,7 @@ Public Function ControlPickPath( _
     ' Sets the value of a control with the path, if any, picked
     ' from a standard file dialog of the specified picker type,
     ' initialized with the given title, filters and initial folder.
+    ' Returns TRUE if anything was picked, else returns FALSE.
     '
 
     Dim path As String
@@ -602,7 +603,7 @@ Public Function ObjectExists( _
 ) As Boolean
     '
     ' Returns TRUE if a named object of the given type exists
-    ' in the current project application, else returns FALSE
+    ' in the application's current project, else returns FALSE
     ' (see ObjectType enum above).
     '
     On Error GoTo Catch   ' IsObject() throws an error if the object doesn't exist.
@@ -704,16 +705,6 @@ Public Function PathTerminate( _
     If Right(PathTerminate, 1) <> aChar Then PathTerminate = PathTerminate & aChar
 End Function
 
-Public Function ProcessIsRunning( _
-    ByVal aName As String _
-) As Boolean
-    '
-    ' Returns TRUE if the named program is currently running, else returns FALSE.
-    '
-    ProcessIsRunning = (GetObject("winmgmts:") _
-    .ExecQuery("select * from win32_process where name='" & aName & "'").count > 0)
-End Function
-
 Public Sub PropertyCreate( _
     aDatabase As Database, _
     ByVal aProperty As String, _
@@ -781,7 +772,8 @@ Public Function PropertyLoad( _
 ) As Variant
     '
     ' Returns the current value of a database property, or
-    ' the default value, if the property doesn't exist.
+    ' the default value, if the property doesn't exist. If
+    ' aDatabase is omitted, the current database is used.
     '
     If aDatabase Is Nothing Then Set aDatabase = CurrentDb
     PropertyLoad = aDefault
@@ -817,7 +809,8 @@ Public Sub PropertyUpdate( _
     '
     ' Sets the current value of a database property to the
     ' given or default value, or deletes the property if
-    ' neither value is specified.
+    ' neither value is specified. If aDatabase is omitted,
+    ' the current database is used.
     '
     If aDatabase Is Nothing Then Set aDatabase = CurrentDb
     aValue = IIf(IsValue(aValue), aValue, aDefault)
@@ -960,9 +953,8 @@ Public Function RemoteCall( _
     ParamArray aArgs() As Variant _
 ) As Variant
     '
-    ' Executes a remote procedure call in another database.
-    ' The called database is opened. Returns the value
-    ' returned by the called procedure.
+    ' Executes a remote procedure call in another database
+    ' and returns the value returned by the called procedure.
     '
     Dim app As New Access.Application
     Dim dbproc As String
@@ -986,7 +978,7 @@ Public Function ReplaceTags( _
     '
     ' Convenience function that is easier to use than multiple
     ' nested Replace() functions. Search and replace arguments
-    ' must be supplied as pairs, e.g."search for, "replace with",
+    ' must be supplied in pairs, e.g."search for", "replace with",
     ' otherwise an error may occur.
     '
     Dim i As Integer
@@ -1035,8 +1027,8 @@ Public Function StringTab( _
     ' Appends an emulated tab character to the end of a
     ' string using spaces. Useful for displaying strings
     ' in controls that do not display tab characters (e.g.
-    ' TextBoxes). The spacing argument is the tab spacing in
-    ' characters.
+    ' TextBoxes). The spacing argument is the tab spacing
+    ' in characters.
     '
     StringTab = Space(MaxOf((Len(aToken) Mod aSpacing), 1))
 End Function
@@ -1101,7 +1093,7 @@ Public Function TablesList( _
     '
     ' Returns a list of database tables names,
     ' excluding any types specified by the exclude
-    ' mask see DAO.TableDef.Attributes for mask values.
+    ' mask. See DAO.TableDef.Attributes for mask values.
     '
     Dim tdf As DAO.TableDef, tbls() As Variant
     
@@ -1121,9 +1113,9 @@ Public Function TextBoxAppend( _
     Optional ByVal aPrepend As Boolean = False _
 ) As Long
     '
-    ' Appends text to a multiline textbox and scrolls to the 
-    ' bottom so that the latest text is always visible. The newline
-    ' can be optionally prepended or appended to the text.
+    ' Appends text to a multiline textbox and scrolls to the
+    ' bottom so that the latest text is always visible. The
+    ' newline can be optionally prepended or appended to the text.
     ' NOTE: Multi-line TextBoxes are limited to 65535 charcters.
     ' Attempting to append more characters causes an error.
     '

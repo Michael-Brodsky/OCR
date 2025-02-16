@@ -15,7 +15,7 @@ Attribute VB_Name = "basLibMath"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' libNumeric, ComplexT                                      '
+' LibNumeric, ComplexT                                      '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '

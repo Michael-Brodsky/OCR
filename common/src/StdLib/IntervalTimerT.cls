@@ -48,10 +48,11 @@ Public Function Expired( _
     ByVal aTimeout As Double _
 ) As Boolean
     '
-    ' Returns TRUE if the current elapsed time is greater than
-    ' the given timeout period in seconds, else returns FALSE.
+    ' Returns TRUE if aTimeout >=0 and the current elapsed time
+    ' is greater than the given timeout period in seconds, else
+    ' returns FALSE.
     '
-    Expired = (Elapsed > aTimeout)
+    Expired = IIf(aTimeout < 0, False, (Elapsed > aTimeout))
 End Function
 
 Public Sub Reset()

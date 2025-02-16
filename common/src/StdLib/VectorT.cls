@@ -39,7 +39,7 @@ Option Explicit
 ' Private Members '
 '''''''''''''''''''
 
-Private Container As New ContainerT    ' The vector storage container.
+Private Container As New ContainerT    ' The underlying storage container.
 
 '''''''''''''''''''''''''''''
 ' Private Member Accessors  '
@@ -57,6 +57,10 @@ End Property
 Friend Property Set MyContainer(aContainer As ContainerT)
     Set Container = aContainer
 End Property
+
+''''''''''''''''''''
+' Public Interface '
+''''''''''''''''''''
 
 Public Property Get At( _
     ByVal aIndex As Long _

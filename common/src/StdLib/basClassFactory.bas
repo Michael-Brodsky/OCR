@@ -130,9 +130,7 @@ Public Function NewShell() As Object
     Set NewShell = CreateObject("WScript.Shell")
 End Function
 
-Public Function NewStackT( _
-    Optional aData As Variant _
-) As StackT
+Public Function NewStackT() As StackT
     Dim obj As New StackT
     
     Set NewStackT = obj
