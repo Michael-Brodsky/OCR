@@ -267,7 +267,7 @@ Public Function Insert( _
     ' Inserts aCount elements of aValue begining at aPosition.
     ' No type checking is performed. Increases Size by aCount.
     ' If the new Size is greater than the old Capacity, a
-    ' reallocation occurs. An error occurs if aPosition past
+    ' reallocation occurs. An error occurs if aPosition is past
     ' the end.
     '
     MakeUnsigned aPosition
@@ -352,7 +352,7 @@ Public Function Remove( _
     '
     ' Removes aCount elements begining at aPosition.
     ' Decreases Size by aCount. No type checking is performed.
-    ' An error occurs if aPosition past the end.
+    ' An error occurs if aPosition is past the end.
     '
     MakeUnsigned aPosition
     MakeUnsigned aCount
