@@ -1121,7 +1121,7 @@ Public Function TextBoxAppend( _
     Optional ByVal aPrepend As Boolean = False _
 ) As Long
     '
-    ' Appends text to a multiline textbox and scrolls to the bottom
+    ' Appends text to a multiline textbox and scrolls to the 
     ' bottom so that the latest text is always visible. The newline
     ' can be optionally prepended or appended to the text.
     ' NOTE: Multi-line TextBoxes are limited to 65535 charcters.
