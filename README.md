@@ -20,8 +20,8 @@ conversion and, most importantly, can run silently in the background without dis
 user's desktop. Its main disadvantage is that it can only convert a few image file formats 
 into text, thus requiring installation of additional converters. The repository libraries use  
 ImageMagick, an open-source image converter, to convert Adobe pdf files into a format readable 
-by Tesseract. ImageMagick however requires the support of GPL GhostScript, which must also be 
-installed on the host computer.
+by Tesseract. ImageMagick requires the support of GPL GhostScript, which must also be installed 
+on the host computer.
 
 OneNote has the advantage of being part of the MS Office suite and thus requires no further
 licensing or installation of third-party software. It's main disadvantages are its speed and 
