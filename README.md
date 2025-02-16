@@ -25,7 +25,7 @@ installed on the host computer.
 
 OneNote has the advantage of being part of the MS Office suite and thus requires no further
 licensing or installation of third-party software. It's main disadvantages are its speed that 
-it cannot run silently in the background and essentially takes over the user's desktop. This 
+it cannot run silently in the background, essentially taking over the user's desktop. This 
 is especially troublesome when cataloging Adobe pdf files as Adobe has removed the silent 
 printing option from Acrobat and so Acrobat and OneNote contiuously switch back and forth from 
 being the top-level window, even if the user clicks on another window. This prevents users 
