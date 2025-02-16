@@ -213,7 +213,7 @@ Public Sub ArrayPushFront( _
 )
     '
     ' Inserts an element with aValue before the first
-    ' array element.No type checking is performed. The
+    ' array element. No type checking is performed. The
     ' behavior is undefined if aArray is not a dynamic
     ' array.
     '
@@ -335,7 +335,7 @@ Public Function ArraySearch( _
     ' matches aValue, if any. Uses the most suitable algorithm
     ' based on aSorted. No type-checking is performed. The
     ' behavior is undefined if the aArray is not an array, or
-    ' the array elements and aValue typesare not a homogeneous.
+    ' the array elements and aValue types are not a homogeneous.
     '
     If aSorted Then
         ArraySearch = SearchBinary(aValue, aArray)
@@ -440,7 +440,7 @@ Public Sub ArraySort( _
     ' Lexicographically sorts a one-dimensional array using
     ' the insertion sort algorithm. Array elements must be
     ' contiguous. No type checking is performed. The behavior
-    ' is undefined if aArray is not a one- dimensional array
+    ' is undefined if aArray is not a one-dimensional array
     ' or the array elements are not primitive types.
     '
     Dim i As Integer, n As Integer
