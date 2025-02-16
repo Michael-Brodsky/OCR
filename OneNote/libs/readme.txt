@@ -1,1 +1,1 @@
-This folder contains MS OneNote libraries.
+This folder contains DOCUFILE_W libraries.
