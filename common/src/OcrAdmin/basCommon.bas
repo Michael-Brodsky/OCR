@@ -15,7 +15,7 @@ Attribute VB_Name = "basCommon"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibAIOTesseract                                           '
+' LibOCR2, StdLib                                           '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
