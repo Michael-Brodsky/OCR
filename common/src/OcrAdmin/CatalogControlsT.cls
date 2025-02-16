@@ -52,15 +52,22 @@ Attribute comboCatalogName.VB_VarHelpID = -1
 Private WithEvents txtCatalogName As TextBox
 Attribute txtCatalogName.VB_VarHelpID = -1
 Private WithEvents txtConnection As TextBox
+Attribute txtConnection.VB_VarHelpID = -1
 Private WithEvents cmdConnectionBrowse As CommandButton
+Attribute cmdConnectionBrowse.VB_VarHelpID = -1
 Private WithEvents txtSaveToPath As TextBox
+Attribute txtSaveToPath.VB_VarHelpID = -1
 Private WithEvents cmdSaveToPathBrowse As CommandButton
+Attribute cmdSaveToPathBrowse.VB_VarHelpID = -1
 Private WithEvents optionMethod As OptionGroup
 Attribute optionMethod.VB_VarHelpID = -1
 Private WithEvents comboTable As ComboBox
+Attribute comboTable.VB_VarHelpID = -1
 Private txtProcedure As TextBox
 Private WithEvents comboField As ComboBox
+Attribute comboField.VB_VarHelpID = -1
 Private txtParameter As TextBox
+Private labMethod As Label      ' Data Rules storage method/parameter column header label.
 Private boolVisible As Boolean
 
 '''''''''''''''''''''''''''
@@ -116,6 +123,14 @@ Public Property Set MethodControl( _
     aOptionGroup As OptionGroup _
 )
     Set optionMethod = aOptionGroup
+End Property
+
+Public Property Get MethodLabel() As Label
+    Set MethodLabel = labMethod
+End Property
+
+Public Property Set MethodLabel(aLabel As Label)
+    Set labMethod = aLabel
 End Property
 
 Public Property Get ParameterControl() As TextBox
@@ -193,14 +208,17 @@ Public Property Get RequiredControls() As Control()
 End Property
 
 Public Property Get StorageMethod() As DataStorageMethod
-    If Not MethodControl Is Nothing Then StorageMethod = MethodControl.Value
+    StorageMethod = MethodControl.Value
 End Property
 
 Public Property Let StorageMethod( _
     ByVal aStorageMethod As DataStorageMethod _
 )
     If boolVisible Then ControlsShow aStorageMethod
-    If Not MethodControl Is Nothing Then MethodControl.Value = aStorageMethod
+    MethodControl.Value = aStorageMethod
+    If Not MethodLabel Is Nothing Then
+        If MethodLabel.Visible Then MethodLabel.Caption = "Storage " & IIf(StorageMethod = osmBuiltIn, "Field", "Parameter")
+    End If
 End Property
 
 Public Property Get Visible() As Boolean
@@ -225,7 +243,8 @@ Public Sub Init( _
     aField As ComboBox, _
     aProcedure As TextBox, _
     aParameter As TextBox, _
-    ByVal aVisible As Boolean _
+    Optional aStorageLabel As Label = Nothing, _
+    Optional ByVal aVisible As Boolean = False _
 )
     Set CatalogControl = aCatalog
     Set ConnectionControl = aConnection
@@ -237,6 +256,7 @@ Public Sub Init( _
     Set FieldControl = aField
     Set ProcedureControl = aProcedure
     Set ParameterControl = aParameter
+    Set MethodLabel = aStorageLabel
     Visible = aVisible
     StorageMethod = MethodControl.Value
 End Sub

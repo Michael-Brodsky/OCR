@@ -15,7 +15,7 @@ Attribute VB_Name = "basCommon"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibOCR2, StdLib                                           '
+' LibAIOTesseract                                           '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -175,7 +175,7 @@ Public Function FormControlChange( _
     ParamArray aRequiredControls() As Variant _
 ) As Boolean
     '
-    ' Returns TRUE if all required controls are valid and,
+    ' Returns TRUE all required controls are valid and,
     ' the active control is either unspecified or valid,
     ' else returns FALSE.
     '
@@ -320,7 +320,7 @@ Public Sub FormRunDelete( _
     Optional ByVal aWhere As String _
 )
     '
-    ' Generates and executes a delete query from the given arguments.
+    ' Generates and executes delete query from the given arguments.
     ' Generally used by forms to delete data outside their own recordset.
     '
     Const kSql As String = _
@@ -373,12 +373,13 @@ Public Function NewCatalogControlsT( _
     aField As ComboBox, _
     aProcedure As TextBox, _
     aParameter As TextBox, _
-    aVisible As Boolean _
+    Optional aStorageLabel As Label = Nothing, _
+    Optional ByVal aVisible As Boolean = False _
 ) As CatalogControlsT
     Dim ctrls As New CatalogControlsT
     
     ctrls.Init aCatalog, aConnection, aSaveToPath, aMethod, aBrowseConnection, aBrowseSaveTo, _
-    aTable, aField, aProcedure, aParameter, aVisible
+    aTable, aField, aProcedure, aParameter, aStorageLabel, aVisible
     Set NewCatalogControlsT = ctrls
     Set ctrls = Nothing
 End Function

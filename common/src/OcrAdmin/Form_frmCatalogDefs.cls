@@ -293,7 +293,7 @@ Private Sub MeLoad()
     '
     Set ctrlsCatalog = NewCatalogControlsT(Me.Catalog_Name, Me.Catalog_Connection, Me.Catalog_SaveTo_Path, _
     Me.Catalog_SaveTo_Method, Me.Catalog_Connection_Browse, Me.Catalog_SaveTo_Browse, Me.Catalog_SaveTo_Table, _
-    Me.Catalog_SaveTo_Field, Me.Catalog_SaveTo_Procedure, Me.Catalog_SaveTo_Parameter, True)
+    Me.Catalog_SaveTo_Field, Me.Catalog_SaveTo_Procedure, Me.Catalog_SaveTo_Parameter, , True)
 End Sub
 
 Private Sub MeUndo()
