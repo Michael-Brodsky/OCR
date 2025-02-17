@@ -197,7 +197,7 @@ Try:
     ocrText = ocrFileConvert(aOcrConvert, sourcePath)
     aWorkspace.BeginTrans
     intrans = True
-    ' Extract and ocr data and move the source file to the destination path.
+    ' Extract any ocr data and move the source file to the destination path.
     ocrdata = ocrStoreData(ocrText, destinationPath, aProcessInfo, aProcessRules, aCatalog)
     If sourcePath <> destinationPath Then FileMove sourcePath, destinationPath
     ' Only commit the transaction if the source file was successfully cataloged and moved.
