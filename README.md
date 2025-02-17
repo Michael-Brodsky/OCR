@@ -8,7 +8,7 @@ to the source documents. Clients that access the database can provide users with
 for and view the documents.
 
 To read and extract information, the library databases convert source files to text using 
-optical character recognition (OCR) technology. Currently, two OCR engines are used: OCR- 
+optical character recognition (OCR) technology. Currently, two OCR engines are used: OCR-
 Tesseract and Microsoft OneNote. Tesseract is an open-source OCR engine and one of the most 
 reliable and effective available. It is hosted on Github: https://github.com/tesseract-ocr/tesseract. 
 MS OneNote is part of the MS Office suite and has OCR capabilities built in. Depending on source 
