@@ -53,6 +53,7 @@ Public Const kOcrAdminPropertyAppOnError As String = "OCRApplicationOnError"
 Public Const kOcrAdminPropertyAppTimeout As String = "OCRApplicationTimeout"
 Public Const kOcrAdminPropertyAppWindowStyle As String = "OCRApplicationHide"
 Public Const kOcrAdminPropertyAppFolderTemp As String = "OCRTempDir"
+Public Const kStrCannotBeBlank As String = " cannot be blank"
 Public Const kOcrAdminStrFilterAllFiles As String = "All Files,*.*"
 Public Const kOcrAdminStrFilterDatabase As String = "Microsoft Access,*.accdb; *.accde ,All Files,*.*"
 Public Const kOcrAdminStrSelectDatabase As String = "Select Database"
@@ -65,4 +66,3 @@ Public Const kOcrAdminStrVersion As String = "(v) 20241107"
 ''''''''''''''''''''''''''''''''''
 ' Application-Specific Constants '
 ''''''''''''''''''''''''''''''''''
-

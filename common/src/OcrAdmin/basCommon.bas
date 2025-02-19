@@ -373,13 +373,12 @@ Public Function NewCatalogControlsT( _
     aField As ComboBox, _
     aProcedure As TextBox, _
     aParameter As TextBox, _
-    Optional aStorageLabel As Label = Nothing, _
-    Optional ByVal aVisible As Boolean = False _
+    aVisible As Boolean _
 ) As CatalogControlsT
     Dim ctrls As New CatalogControlsT
     
     ctrls.Init aCatalog, aConnection, aSaveToPath, aMethod, aBrowseConnection, aBrowseSaveTo, _
-    aTable, aField, aProcedure, aParameter, aStorageLabel, aVisible
+    aTable, aField, aProcedure, aParameter, aVisible
     Set NewCatalogControlsT = ctrls
     Set ctrls = Nothing
 End Function

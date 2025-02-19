@@ -124,10 +124,13 @@ End Sub
 Public Sub Save()
     '
     ' Saves the current control values in their associated
-    ' database properties.
+    ' database properties. An error occurrs if all required
+    ' controls are not valid.
     '
-    Dim it As Long
+    Dim it As Long, invld As Control
     
+    Set invld = Invalid
+    If Not invld Is Nothing Then Err.Raise UsrErr(kOcrAdminErrSettings), CurrentProject.Name, invld.Name & kStrCannotBeBlank
     For it = 0 To vecControls.Size - 1
         ControlSave vecControls.At(it)
     Next

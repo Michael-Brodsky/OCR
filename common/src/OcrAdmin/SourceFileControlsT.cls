@@ -41,13 +41,17 @@ Option Explicit
 '''''''''''''''''''
 
 Private WithEvents comboSearchName As ComboBox
+Attribute comboSearchName.VB_VarHelpID = -1
 Private WithEvents txtSearchName As TextBox
 Attribute txtSearchName.VB_VarHelpID = -1
 Private WithEvents txtSearchPath As TextBox
 Attribute txtSearchPath.VB_VarHelpID = -1
 Private WithEvents cmdSearchPathBrowse As CommandButton
+Attribute cmdSearchPathBrowse.VB_VarHelpID = -1
 Private WithEvents comboFileTypes As ComboBox
+Attribute comboFileTypes.VB_VarHelpID = -1
 Private WithEvents cmdFileTypesEdit As CommandButton
+Attribute cmdFileTypesEdit.VB_VarHelpID = -1
 
 '''''''''''''''''''''''''''
 ' Public Member Accessors '
@@ -186,7 +190,7 @@ Private Sub comboSearchName_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (comboSearchName.Text = "")
-    If Cancel Then MsgBox comboSearchName.Name & " cannot be blank"
+    If Cancel Then MsgBox comboSearchName.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:
@@ -207,7 +211,7 @@ Private Sub txtSearchName_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (txtSearchName.Text = "")
-    If Cancel Then MsgBox txtSearchName.Name & " cannot be blank"
+    If Cancel Then MsgBox txtSearchName.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:
@@ -228,7 +232,7 @@ Private Sub txtSearchPath_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (txtSearchPath.Text = "")
-    If Cancel Then MsgBox txtSearchPath.Name & " cannot be blank"
+    If Cancel Then MsgBox txtSearchPath.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:

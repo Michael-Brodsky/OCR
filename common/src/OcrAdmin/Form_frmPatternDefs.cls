@@ -251,7 +251,7 @@ Private Sub PatternBeforeUpdate( _
     ByRef Cancel As Integer _
 )
     Cancel = (Me.Pattern.Text = "")
-    If Cancel Then MsgBox Me.Pattern.Name & " cannot be blank"
+    If Cancel Then MsgBox Me.Pattern.Name & kStrCannotBeBlank
 End Sub
 
 Private Function PatternChange() As Boolean
@@ -265,7 +265,7 @@ Private Sub PatternNameBeforeUpdate( _
     ByRef Cancel As Integer _
 )
     Cancel = (Me.Pattern_Name.Text = "")
-    If Cancel Then MsgBox Me.Pattern_Name.Name & " cannot be blank"
+    If Cancel Then MsgBox Me.Pattern_Name.Name & kStrCannotBeBlank
 End Sub
 
 Private Function PatternNameChange() As Boolean

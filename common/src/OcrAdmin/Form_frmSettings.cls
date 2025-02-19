@@ -773,10 +773,6 @@ Private Sub PropertiesLoad()
     ctrlsConversion.Load
 End Sub
 
-Private Sub PropertiesUndo()
-    ctrlsConversion.Undo
-End Sub
-
 Private Sub PropertiesUpdate()
     ctrlsConversion.Save
 End Sub
@@ -815,6 +811,7 @@ Private Sub ToggleCatalog( _
     ByVal aVisible As Boolean _
 )
     ToggleSection "SS_1", "OF_1", "BL_1", aVisible, Me.cmdCatalogUp, Me.cmdCatalogDown
+    'If aVisible Then CurrentMethod
     ctrlsCatalog.Visible = aVisible
 End Sub
 
@@ -882,6 +879,10 @@ Private Sub MoveSectionsBelow( _
         End If
     Next
 End Sub
+
+''''''''''''''''''''''''''''''''''
+' Application-Specific Interface '
+''''''''''''''''''''''''''''''''''
 
 Private Sub AppLoad()
     '

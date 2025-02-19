@@ -41,7 +41,9 @@ Option Explicit
 '''''''''''''''''''
 
 Private WithEvents comboProcessId As ComboBox
+Attribute comboProcessId.VB_VarHelpID = -1
 Private WithEvents txtProcessName As TextBox
+Attribute txtProcessName.VB_VarHelpID = -1
 
 '''''''''''''''''''''''''''
 ' Public Member Accessors '

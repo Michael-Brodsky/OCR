@@ -67,7 +67,6 @@ Private txtProcedure As TextBox
 Private WithEvents comboField As ComboBox
 Attribute comboField.VB_VarHelpID = -1
 Private txtParameter As TextBox
-Private labMethod As Label      ' Data Rules storage method/parameter column header label.
 Private boolVisible As Boolean
 
 '''''''''''''''''''''''''''
@@ -123,14 +122,6 @@ Public Property Set MethodControl( _
     aOptionGroup As OptionGroup _
 )
     Set optionMethod = aOptionGroup
-End Property
-
-Public Property Get MethodLabel() As Label
-    Set MethodLabel = labMethod
-End Property
-
-Public Property Set MethodLabel(aLabel As Label)
-    Set labMethod = aLabel
 End Property
 
 Public Property Get ParameterControl() As TextBox
@@ -208,17 +199,14 @@ Public Property Get RequiredControls() As Control()
 End Property
 
 Public Property Get StorageMethod() As DataStorageMethod
-    StorageMethod = MethodControl.Value
+    If Not MethodControl Is Nothing Then StorageMethod = MethodControl.Value
 End Property
 
 Public Property Let StorageMethod( _
     ByVal aStorageMethod As DataStorageMethod _
 )
     If boolVisible Then ControlsShow aStorageMethod
-    MethodControl.Value = aStorageMethod
-    If Not MethodLabel Is Nothing Then
-        If MethodLabel.Visible Then MethodLabel.Caption = "Storage " & IIf(StorageMethod = osmBuiltIn, "Field", "Parameter")
-    End If
+    If Not MethodControl Is Nothing Then MethodControl.Value = aStorageMethod
 End Property
 
 Public Property Get Visible() As Boolean
@@ -243,8 +231,7 @@ Public Sub Init( _
     aField As ComboBox, _
     aProcedure As TextBox, _
     aParameter As TextBox, _
-    Optional aStorageLabel As Label = Nothing, _
-    Optional ByVal aVisible As Boolean = False _
+    ByVal aVisible As Boolean _
 )
     Set CatalogControl = aCatalog
     Set ConnectionControl = aConnection
@@ -256,7 +243,6 @@ Public Sub Init( _
     Set FieldControl = aField
     Set ProcedureControl = aProcedure
     Set ParameterControl = aParameter
-    Set MethodLabel = aStorageLabel
     Visible = aVisible
     StorageMethod = MethodControl.Value
 End Sub
@@ -379,7 +365,7 @@ Private Sub txtCatalogName_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (txtCatalogName.Text = "")
-    If Cancel Then MsgBox txtCatalogName.Name & " cannot be blank"
+    If Cancel Then MsgBox txtCatalogName.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:
@@ -420,7 +406,7 @@ Private Sub txtParameter_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (txtParameter.Text = "")
-    If Cancel Then MsgBox txtParameter.Name & " cannot be blank"
+    If Cancel Then MsgBox txtParameter.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:
@@ -432,7 +418,7 @@ Private Sub txtProcedure_BeforeUpdate( _
 )
     On Error GoTo Catch
     Cancel = (txtProcedure.Text = "")
-    If Cancel Then MsgBox txtProcedure.Name & " cannot be blank"
+    If Cancel Then MsgBox txtProcedure.Name & kStrCannotBeBlank
     Exit Sub
     
 Catch:

@@ -405,7 +405,7 @@ Private Sub RuleNameBeforeUpdate( _
     ByRef Cancel As Integer _
 )
     Cancel = (Me.Rule_Name.Text = "")
-    If Cancel Then MsgBox Me.Rule_Name.Name & " cannot be blank"
+    If Cancel Then MsgBox Me.Rule_Name.Name & kStrCannotBeBlank
 End Sub
 
 Private Function RuleNameChange() As Boolean
@@ -419,7 +419,7 @@ Private Sub StorageParameterBeforeUpdate( _
     ByRef Cancel As Integer _
 )
     Cancel = (Me.Storage_Parameter.Text = "")
-    If Cancel Then MsgBox Me.Storage_Parameter.Name & " cannot be blank"
+    If Cancel Then MsgBox Me.Storage_Parameter.Name & kStrCannotBeBlank
 End Sub
 
 Private Sub StorageFieldAfterUpdate()
