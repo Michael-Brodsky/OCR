@@ -1,1 +1,1 @@
-This folder contains DOCUFILE_TS library databases.
+This folder contains library databases used by the OCR-Tesseract based applications.
