@@ -1,5 +1,6 @@
-This folder contains files for installing programs required by the DOCUFILE_TS libraries and
-UI apps. DOCUFILE_TS and LibOCRTesseract have the following dependencies:
+This folder contains files for installing programs required by the OCR-Tesseract versions of 
+the PaperShredder libraries and applications. OCR-Tesseract requires the following to 
+convert Adobe pdf files to text:
 
 gs9561w64.exe -	GPL GhostScript (64-bit) - Postscript interpreter
 ImageMagick-7.1.1-41-Q16-HDRI-x64-dll.exe	- ImageMagick (64-bit) - Pdf to image file converter 
