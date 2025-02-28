@@ -2,14 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "IntervalTimerT"
+Attribute VB_Name = "OcrParamsT"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
-' IntervalTimerT                                            '
+' OcrParamsT                                                '
 '                                                           '
 ' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
 ' (v) 20250225                                              '
@@ -18,12 +18,12 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DESCRIPTION                                               '
 '                                                           '
-' This module defines an interval timer class used to track '
-' elapsed time intervals and timeouts.                      '
+' This module defines a class that aggregates OCR engine    '
+' file conversion parameters.                               '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' (None)                                                    '
+' None                                                      '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -35,37 +35,7 @@ Attribute VB_Exposed = True
 Option Compare Binary
 Option Explicit
 
-Private timeStart As Double ' The current interval start time.
-
-Public Property Get Elapsed() As Double
-    '
-    ' Returs the current interval's elapsed time, in seconds.
-    '
-    Elapsed = Timer() - timeStart
-End Property
-
-Public Function Expired( _
-    ByVal aTimeout As Double _
-) As Boolean
-    '
-    ' Returns TRUE if aTimeout >=0 and the current elapsed time
-    ' is greater than the given timeout period in seconds, else
-    ' returns FALSE.
-    '
-    Expired = IIf(aTimeout < 0, False, (Elapsed > aTimeout))
-End Function
-
-Public Sub Reset()
-    '
-    ' Resets the current interval.
-    '
-    timeStart = 0
-End Sub
-
-Public Sub Start()
-    '
-    ' Starts a new interval.
-    '
-    timeStart = Timer()
-End Sub
-
+Public Filepath As String           ' Full path to input file to convert.
+Public OcrParams As Variant         ' Application-specific conversion parameters.
+Public WindowStyle As VbAppWinStyle ' OCR engine window style.
+Public Timeout As Long              ' Conversion timeout in milliseconds.

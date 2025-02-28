@@ -1,10 +1,10 @@
 Attribute VB_Name = "basLibVBA"
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
-' LibVBA                                                    '
+' basLibVBA                                                 '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -16,7 +16,7 @@ Attribute VB_Name = "basLibVBA"
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
-' LibWin, LibNumeric                                        '
+' basLibWin, basLibArray, basLibNumeric                     '
 '                                                           '
 ' NOTES                                                     '
 '                                                           '
@@ -32,7 +32,7 @@ Option Explicit
 ' Types and Constants '
 '''''''''''''''''''''''
 
-' 2-tuple type (see also PairT).
+' 2-tuple storage type (see also PairT).
 Public Type Pair
     First As Variant
     Second As Variant
@@ -159,8 +159,11 @@ Public Const kvbErrLoadingFromFile As Long = 31037
 ' Miscellaneous Constants '
 '''''''''''''''''''''''''''
 
-Public Const kvbInvalid As Long = -1    ' Indicates an invalid value.
-Public Const kdbNone As Integer = -1    ' Indicates no value.
+Public Const kvbInvalid As Long = -1                    ' Indicates an invalid value.
+Public Const kdbNone As Integer = -1                    ' Indicates no value.
+Public Const kstrAllFiles As String = "All Files,*.*"   ' Default value for certain optional procedure parameters.
+Public Const kstrSelectFile As String = "Select File"   ' Default value for certain optional procedure parameters.
+Public Const kstrSelectPath As String = "Select Path"   ' Default value for certain optional procedure parameters.
 
 '''''''''''''''''''''
 ' Library Functions '
@@ -169,8 +172,8 @@ Public Const kdbNone As Integer = -1    ' Indicates no value.
 Public Function ControlPickPath( _
     aControl As Control, _
     ByVal aPickerType As PickerType, _
-    Optional ByVal aTitle As String = "Select Path", _
-    Optional ByVal aFilters As String = "All Files,*.*", _
+    Optional ByVal aTitle As String = kstrSelectPath, _
+    Optional ByVal aFilters As String = kstrAllFiles, _
     Optional ByVal aInitFolder As String = "" _
 ) As Boolean
     '
@@ -391,8 +394,8 @@ Public Function FileOpen( _
 End Function
 
 Public Function FilePicker( _
-    Optional ByVal aTitle As String = "Select File", _
-    Optional ByVal aFilters As String = "All Files,*.*", _
+    Optional ByVal aTitle As String = kstrSelectFile, _
+    Optional ByVal aFilters As String = kstrAllFiles, _
     Optional ByVal aInitFolder As String = "" _
 ) As String
     '
@@ -521,10 +524,9 @@ Public Function FormatParam( _
     ParamArray aArgs() As Variant _
 ) As String
     '
-    ' Returns the given args as a tab-delimited string.
+    ' Returns the given arguments as a tab-delimited string.
     ' Arguments can be of any type, or array of type,
-    ' convertible to a string. Emulates the output of
-    ' Debug.Print
+    ' convertible to a string.
     '
     Dim Arg As Variant
     
@@ -675,8 +677,8 @@ End Function
 
 Public Function PathPicker( _
     ByVal aPickerType As PickerType, _
-    Optional ByVal aTitle As String = "Select Path", _
-    Optional ByVal aFilters As String = "All Files,*.*", _
+    Optional ByVal aTitle As String = kstrSelectPath, _
+    Optional ByVal aFilters As String = kstrAllFiles, _
     Optional ByVal aInitFolder As String = "" _
 ) As String
     '

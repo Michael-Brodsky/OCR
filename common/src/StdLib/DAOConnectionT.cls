@@ -11,8 +11,8 @@ Attribute VB_Exposed = True
 '                                                           '
 ' DAOConnectionT                                            '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -416,12 +416,14 @@ Private Function GetOption( _
     If aOption <> "" Then aOption = aOption & "="
     items = Split(IIf(Not IsMissing(aString), aString, CString), ";")
     For Each item In items
-        If IsMatch(aOption, item) Then
-            Dim keyval() As String
-            
-            keyval = Split(item, "=")
-            GetOption = keyval(UBound(keyval))
-            Exit For
+        If Len(Trim(item)) > 0 Then
+            If IsMatch(aOption, item) Then
+                Dim keyval() As String
+                
+                keyval = Split(item, "=")
+                GetOption = keyval(UBound(keyval))
+                Exit For
+            End If
         End If
     Next
 End Function
@@ -441,9 +443,11 @@ Private Sub SetOption( _
     keyval = aOption & aValue
     items = Split(CString, ";")
     For Each item In items
-        If IsMatch(aOption, item) Then
-            CString = Replace(CString, item, IIf(aValue = "", "", keyval))
-            Exit Sub
+        If Len(Trim(item)) > 0 Then
+            If IsMatch(aOption, item) Then
+                CString = Replace(CString, item, IIf(aValue = "", "", keyval))
+                Exit Sub
+            End If
         End If
     Next
     CString = CString & IIf(aValue = "", "", keyval & ";")

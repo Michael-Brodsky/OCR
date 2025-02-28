@@ -9,10 +9,10 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
-' RsActiveProcessesT                                                '
+' RsActiveProcessesT                                        '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -20,7 +20,7 @@ Attribute VB_Exposed = False
 '                                                           '
 ' This module defines a class that encapsulates a DAO       '
 ' Recordset holding information about active cataloging     '
-' processes and accessible using dot notation.              '
+' processes that is accessible using dot notation.          '
 '                                                           '
 ' DEPENDENCIES                                              '
 '                                                           '
@@ -97,11 +97,9 @@ Public Sub Open_()
     
     Close_
     Set db = CurrentDb
-    ' TODO: The qdf needs to be replaced with a defined query.
     Set qdf = CurrentDb.QueryDefs(kOcrQueryActiveProcesses)
     Set Data = NewDAORecordsetT()
     Data.Open_ qdf, dbOpenDynaset
     Set qdf = Nothing
     Set db = Nothing
 End Sub
-

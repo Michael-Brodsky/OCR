@@ -11,8 +11,8 @@ Attribute VB_Exposed = True
 '                                                           '
 ' CallbackT                                                 '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -66,22 +66,39 @@ Public Function Exec( _
 ) As Variant
     '
     ' Executes a callback with the given arguments. Callback parameters
-    ' are passed as a variant array, so callback signatures should be:
-    ' Sub/Function Name(aArgs as Variant).
+    ' are passed as a variant array.
     '
-    If Not Target Is Nothing Then
-        If Not IsMissing(aArgs) Then
-            Exec = CallByName(Target, Procedure, Method, CVar(aArgs))
+    Dim parms() As Variant, tmp() As Variant
+    
+    ' This allows passing the paramarray args to the callback procedure
+    ' whether any arguments were given or not, without hosing them up,
+    ' allegedly.
+    On Error GoTo Catch
+    parms = aArgs
+    Do While VarType(parms(0)) >= vbArray And UBound(parms) < 1
+        tmp = parms(0)
+        parms = tmp
+    Loop
+No_Args:
+    On Error GoTo 0
+    If IsSomething(Target) Then
+        If UBound(parms) > -1 Then
+            Exec = CallByName(Target, Procedure, Method, parms)
         Else
-            Exec = CallByName(Target, Procedure, Method)    ' Specialization for object methods taking no parameters.
+            Exec = CallByName(Target, Procedure, Method)    ' Specialization for procedures taking no parameters.
         End If
     Else
-        If Not IsMissing(aArgs) Then
-            Exec = Application.Run(Procedure, CVar(aArgs))
+        If UBound(parms) > -1 Then
+            Exec = Application.Run(Procedure, parms)
         Else
-            Exec = Application.Run(Procedure)               ' Specialization for free-standing procedures taking no parameters.
+            Exec = Application.Run(Procedure)               ' Specialization for procedures taking no parameters.
         End If
     End If
+    Exit Function
+    
+Catch:
+    If Err.Number = kvbErrSubscriptOutOfRange Then Resume No_Args
+    Err.Raise Err.Number
 End Function
 
 

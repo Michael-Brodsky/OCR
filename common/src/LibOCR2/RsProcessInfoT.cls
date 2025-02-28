@@ -11,8 +11,8 @@ Attribute VB_Exposed = False
 '                                                           '
 ' RsProcessInfoT                                            '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -115,10 +115,11 @@ Public Sub Open_( _
     
     Close_
     Set Data = NewDAORecordsetT()
-    ' TODO: The qry needs to be replaced with something that doesn't replace text in another query.
     Set qry = CurrentDb.QueryDefs(kOcrQueryProcessInfo)
     qry.Parameters("ProcessId") = aProcessId
     Data.Open_ qry
     qry.Close
     Set qry = Nothing
 End Sub
+
+

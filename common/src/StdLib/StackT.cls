@@ -11,8 +11,8 @@ Attribute VB_Exposed = True
 '                                                           '
 ' StackT                                                    '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -38,7 +38,7 @@ Option Explicit
 ' Private Members '
 '''''''''''''''''''
 
-Private Container As New ContainerT
+Private Container As New ContainerT ' The underlying storage container.
 
 '''''''''''''''''''''''''''''
 ' Private Member Accessors  '

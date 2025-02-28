@@ -11,8 +11,8 @@ Attribute VB_Exposed = True
 '                                                           '
 ' ContainerT                                                '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -307,7 +307,7 @@ Public Property Get MaxSize() As Long
     ' Returns the theoretical maximum number of elements the
     ' container can hold.
     '
-    MaxSize = kvbLongMax
+    MaxSize = (kvbLongMax / 2) - 1
 End Property
 
 Public Function PopBack() As Variant

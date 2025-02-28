@@ -1,10 +1,10 @@
 Attribute VB_Name = "basLibArray"
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                                                           '
-' LibArray                                                  '
+' basLibArray                                               '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -283,7 +283,7 @@ Public Function ArrayRotateLeft( _
     ' If aCount is negative then calls ArrayRotateRight() with the
     ' absolute value of aCount. No type-checking is performed. The
     ' behavior is undefined if aArray is not an array or the array
-    ' elements types are not homogeneous.
+    ' element types are not homogeneous.
     '
     Dim i As Integer, j As Integer
     
@@ -309,7 +309,7 @@ Public Function ArrayRotateRight( _
     ' If aCount is negative then calls ArrayRotateLeft() with the
     ' absolute value of aCount. No type-checking is performed. The
     ' behavior is undefined if aArray is not an array or the array
-    ' elements types are not homogeneous.
+    ' element types are not homogeneous.
     '
     Dim i As Integer, j As Integer
     
@@ -335,7 +335,7 @@ Public Function ArraySearch( _
     ' matches aValue, if any. Uses the most suitable algorithm
     ' based on aSorted. No type-checking is performed. The
     ' behavior is undefined if the aArray is not an array, or
-    ' the array elements and aValue types are not a homogeneous.
+    ' the array element and aValue types are not a homogeneous.
     '
     If aSorted Then
         ArraySearch = SearchBinary(aValue, aArray)
@@ -525,11 +525,11 @@ Public Function ParamToCsv( _
 End Function
 
 Private Function SearchBinary( _
-    aValue As Variant, _
+    aFind As Variant, _
     aArray As Variant _
 ) As Variant
     '
-    ' Searches a sorted one-dimensional array for aValue and
+    ' Searches a sorted one-dimensional array for aFind and
     ' returns the value if found. Uses the binary search algorithm.
     '
     Dim low As Integer, high As Integer, mid As Integer
@@ -538,10 +538,10 @@ Private Function SearchBinary( _
     high = UBound(aArray)
     Do While low <= high
         mid = low + (high - low) / 2
-        If aArray(mid) = aValue Then
+        If aArray(mid) = aFind Then
             SearchBinary = aArray(mid)
             Exit Do
-        ElseIf aArray(mid) < aValue Then
+        ElseIf aArray(mid) < aFind Then
             low = mid + 1
         Else
             high = mid - 1
@@ -555,7 +555,7 @@ Private Function SearchSequential( _
 ) As Variant
     '
     ' Searches each element of a one-dimensional array
-    ' for aArray and returns the value if found.
+    ' for aFind and returns the value if found.
     '
     Dim elem As Variant
     

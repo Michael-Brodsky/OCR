@@ -11,8 +11,8 @@ Attribute VB_Exposed = True
 '                                                           '
 ' ListBoxExT                                                '
 '                                                           '
-' (c) 2017-2024 Michael Brodsky, mbrodskiis@gmail.com       '
-' (v) 20241107                                              '
+' (c) 2017-2025 Michael Brodsky, mbrodskiis@gmail.com       '
+' (v) 20250225                                              '
 '                                                           '
 ' All rights reserved. Unauthorized use prohibited.         '
 '                                                           '
@@ -69,7 +69,7 @@ End Enum
 ' Private Members '
 '''''''''''''''''''
 
-Private WithEvents ListBoxEx As ListBox ' Client control.
+Private WithEvents ListBoxEx As ListBox ' The client control.
 Attribute ListBoxEx.VB_VarHelpID = -1
 Private itemSelected() As Boolean       ' Current selection status of each client ListItem.
                                 
@@ -78,6 +78,9 @@ Private itemSelected() As Boolean       ' Current selection status of each clien
 '''''''''''''''''''''''''''
 
 Public Property Get Control() As ListBox
+    '
+    ' Returns the current client control.
+    '
     Set Control = ListBoxEx
 End Property
 
@@ -85,7 +88,7 @@ Public Property Set Control( _
     aListBox As ListBox _
 )
     '
-    ' Sets the client ListBox control.
+    ' Sets the current client ListBox control.
     '
     Set ListBoxEx = aListBox
 End Property
