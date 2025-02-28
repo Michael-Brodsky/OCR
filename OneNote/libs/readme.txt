@@ -1,1 +1,1 @@
-This folder contains DOCUFILE_W library databases.
+This folder contains library databases used by the MS OneNote-based applications.
