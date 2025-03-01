@@ -30,8 +30,8 @@ Option Explicit
 ' Common Application Constants '
 ''''''''''''''''''''''''''''''''
 
-' These come from the OCRAdmin.accdb template UI and are
-' used in any front-end application.
+' These come from the OCRAppTemplate.accdb database and are
+' common to all client applications.
 
 Public Const kOcrAdminConvertErrDefault As Integer = vbIgnore
 Public Const kOcrAdminErrSetup As Long = 99
@@ -67,10 +67,4 @@ Public Const kOcrAdminStrVersion As String = "(v) 20250225"
 ' Application-Specific Constants '
 ''''''''''''''''''''''''''''''''''
 
-Public Const kOcrTesseractPropertyImageDensity As String = "OCRImageDensity"
-Public Const kOcrTesseractPropertyImageFormat As String = "OCRImageFormat"
-Public Const kOcrTesseractPropertyImageResize As String = "OCRImageResize"
-Public Const kOcrTesseractPropertyImageRotate As String = "OCRImageRotate"
-Public Const kOcrTesseractPropertyImageSharpen As String = "OCRImageSharpen"
-Public Const kOcrTesseractPropertyImageTrim As String = "OCRImageTrim"
 
