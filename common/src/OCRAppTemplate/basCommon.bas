@@ -189,7 +189,7 @@ Public Function FormControlChange( _
     ParamArray aRequiredControls() As Variant _
 ) As Boolean
     '
-    ' Returns TRUE all required controls are valid and,
+    ' Returns TRUE if all required controls are valid and,
     ' the active control is either unspecified or valid,
     ' else returns FALSE.
     '
@@ -334,7 +334,7 @@ Public Sub FormRunDelete( _
     Optional ByVal aWhere As String _
 )
     '
-    ' Generates and executes delete query from the given arguments.
+    ' Generates and executes a delete query from the given arguments.
     ' Generally used by forms to delete data outside their own recordset.
     '
     Const kSql As String = _
