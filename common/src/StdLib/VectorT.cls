@@ -264,7 +264,7 @@ Public Sub PushBack( _
     aValue As Variant _
 )
     '
-    ' Appends an element with aValue value after the last element.
+    ' Appends an element with aValue after the last element.
     '
     Container.PushBack aValue
 End Sub
