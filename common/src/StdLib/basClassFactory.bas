@@ -105,6 +105,23 @@ Public Function NewIntervalTimerT() As IntervalTimerT
     Set obj = Nothing
 End Function
 
+Public Function NewLicenseT() As LicenseT
+    Dim obj As New LicenseT
+    
+    Set NewLicenseT = obj
+    Set obj = Nothing
+End Function
+
+
+Public Function NewLicenseKeyT( _
+) As LicenseKeyT
+    Dim obj As New LicenseKeyT
+    
+    obj.Init
+    Set NewLicenseKeyT = obj
+    Set obj = Nothing
+End Function
+
 Public Function NewListBoxExT( _
     Optional aControl As ListBox _
 ) As ListBoxExT
