@@ -291,7 +291,7 @@ Public Function FileEmpty( _
     ByVal aFilePath As String _
 ) As Boolean
     '
-    ' Returns TRUE if the given file exists, else returns FALSE.
+    ' Returns TRUE if the given file is empty, else returns FALSE.
     '
     FileEmpty = (FileLen(aFilePath) = 0)
 End Function
