@@ -1,5 +1,5 @@
 # OCR
-Optical Character Recognition Database File Storage Solutions
+Optical Character Recognition Database File Storage Solutions (PaperShredder)
 
 This repository contains several Microsoft Access database solutions for storing digital copies 
 of paper documents in a database. The library and application databases can read photos and  
