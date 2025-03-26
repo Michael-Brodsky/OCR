@@ -1,4 +1,0 @@
-[Setup]
-Lang=default
-NoIcons=0
-Tasks=modifypath,install_ffmpeg,legacy_support
