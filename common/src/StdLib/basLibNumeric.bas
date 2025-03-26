@@ -46,6 +46,14 @@ Public Const kvbSingleMin As Single = 1.401298E-45!
 Public Const kvbDoubleMax As Double = 1.79769313486231E+308
 Public Const kvbDoubleMin As Double = -1.79769313486231E+308
 Public Const kvbEpsilon As Double = 1E-21
+Public Const kvbCharBits = 8
+Public Const kvbSizeOfByte = 1
+Public Const kvbSizeOfInt = 2
+Public Const kvbSizeOfLong = 4
+Public Const kvbSizeOfDouble = 8
+#If VBA7 Then
+Public Const kvbSizeOfLongLong = 8
+#End If
 
 '''''''''''''''''''''''''''''
 ' Common Physical Constants '
@@ -83,6 +91,34 @@ Public Function BitIsSet( _
     
     mask = 2 ^ n
     BitIsSet = (mask And x) = mask
+End Function
+
+#If VBA7 Then
+Public Function BytesToLong(aBytes() As Byte) As Long
+    '
+    ' Returns an array of bytes converted to a two's-complement signed Long.
+    '
+    Dim i As Integer, j As Integer, n As LongLong
+    
+    For i = LBound(aBytes) To UBound(aBytes)
+        n = n + CLng(aBytes(i)) * 256# ^ j
+        j = j + 1
+    Next
+    BytesToLong = CLng(-(n And &H80000000) + (n And &H7FFFFFFF))
+End Function
+#End If
+
+Public Function BytesToInt(aBytes() As Byte) As Integer
+    '
+    ' Returns an array of bytes converted to a two's-complement signed Integer.
+    '
+    Dim i As Integer, j As Integer, n As Long
+    
+    For i = LBound(aBytes) To UBound(aBytes)
+        n = n + CInt(aBytes(i)) * 256 ^ j
+        j = j + 1
+    Next
+    BytesToInt = CInt(-(n And &H8000) + (n And &H7FFF))
 End Function
 
 Public Function Constrain( _
@@ -140,6 +176,17 @@ Public Function Fibonacci( _
     Fibonacci = result
 End Function
 
+Public Function IntToBytes(aInteger As Integer) As Byte()
+    '
+    ' Returns a signed Integer as a two's-complement array of bytes.
+    '
+    Dim bytes(kvbSizeOfInt - 1) As Byte
+    
+    bytes(0) = aInteger And &HFF
+    bytes(1) = CInt((aInteger And &HFF00) / 256) And &HFF
+    IntToBytes = bytes
+End Function
+
 Public Function IPow2Ge( _
     ByVal n As Long _
 ) As Long
@@ -180,14 +227,27 @@ Public Function IsPow2( _
 End Function
 
 Public Function IsSignNe( _
-    ByVal a As Double, _
+    ByVal A As Double, _
     ByVal b As Double _
 ) As Boolean
     '
     ' Returns TRUE if a and b have opposite signs,
     ' else returns FALSE.
     '
-    IsSignNe = (SignOf(a) <> SignOf(b))
+    IsSignNe = (SignOf(A) <> SignOf(b))
+End Function
+
+Public Function LongToBytes(aLong As Long) As Byte()
+    '
+    ' Returns a signed Long as a two's-complement array of bytes.
+    '
+    Dim bytes(kvbSizeOfLong - 1) As Byte
+    
+    bytes(0) = aLong And &HFF
+    bytes(1) = ((aLong And &HFF00) / 256) And &HFF
+    bytes(2) = ((aLong And &HFF0000) / 256 ^ 2) And &HFF
+    bytes(3) = ((aLong And &HFF000000) / 256 ^ 3) And &HFF
+    LongToBytes = bytes
 End Function
 
 Public Function MakeUnsigned( _
@@ -289,15 +349,15 @@ Public Function MinMax( _
     ' primitive types.
     '
     If ArraySize(aValues) > 0 Then
-        Dim a As Variant
+        Dim A As Variant
         
         MinMax.First = aValues(LBound(aValues))
         MinMax.Second = MinMax.First
-        For Each a In aValues
-            If a < MinMax.First Then
-                MinMax.First = a
-            ElseIf a > MinMax.Second Then
-                MinMax.Second = a
+        For Each A In aValues
+            If A < MinMax.First Then
+                MinMax.First = A
+            ElseIf A > MinMax.Second Then
+                MinMax.Second = A
             End If
         Next
     ElseIf Not IsArray(aValues) Then
@@ -337,20 +397,20 @@ Public Function Mode( _
     ' primitive types.
     '
     If ArraySize(aValues) > 0 Then
-        Dim count As Long, max_count As Long, key As Long, i As Long
+        Dim Count As Long, max_count As Long, Key As Long, i As Long
         
-        count = 1
-        key = aValues(LBound(aValues))
+        Count = 1
+        Key = aValues(LBound(aValues))
         For i = LBound(aValues) + 1 To UBound(aValues)
-            If key = aValues(i) Then
-                count = count + 1
+            If Key = aValues(i) Then
+                Count = Count + 1
             Else
-                If count > max_count Then
+                If Count > max_count Then
                     Mode = aValues(i - 1)
-                    max_count = count
+                    max_count = Count
                 End If
-                key = aValues(i)
-                count = 1
+                Key = aValues(i)
+                Count = 1
             End If
         Next
         If max_count < 2 Then Mode = 0
@@ -397,23 +457,45 @@ Public Function RandI( _
     Optional ByVal aSeed As Variant _
 ) As Integer
     '
-    ' Returns a random Integer between between aMin and aMax inclusive.
+    ' Returns a random Integer in [aMin, aMax].
     '
     RandI = CInt(Int((CLng(aMax) - CLng(aMin) + 1) * Rnd(aSeed) + CLng(aMin)))
 End Function
 
-#If VBA7 Then
 Public Function RandL( _
-    Optional ByVal aMin As Long = kvbLongMin, _
-    Optional ByVal aMax As Long = kvbLongMax, _
     Optional ByVal aSeed As Variant _
 ) As Long
     '
-    ' Returns a random Long between aMin and aMax inclusive.
+    ' Returns a random Long in [1, 2^31 - 1]. The given aSeed should be
+    ' coprime to kM (see below) else the generator's period may be
+    ' severely reduced.
     '
-    RandL = CLng(Int((CDbl(aMax) - CDbl(aMin) + 1) * Rnd(aSeed) + CDbl(aMin)))
+    ' VBA's Rnd() function can only generate random single-precision
+    ' floating point numbers in [0,1), which have seven significant
+    ' digits, and are insufficent to generate values across the entire
+    ' range of Longs. Here, we use a variation of the Park-Miller
+    ' algorithm capable of generating outputs from 1 to 2,147,483,646.
+    '
+    '
+    Const kSeed As Long = 32765
+    Const kM As Long = &H7FFFFFFF
+    Const kA As Long = 48271
+    Const kQ As Long = kM / kA     ' 44488
+    Const kR As Long = kM Mod kA   '  3399
+    Dim div As Long, rm As Long, s As Long, t As Long, result As Long
+    Static seed As Long
+    
+    If Not IsMissing(aSeed) Then seed = aSeed
+    If seed = 0 Then seed = kSeed
+    div = seed / kQ
+    rm = seed Mod kQ
+    s = rm * kA
+    t = div * kR
+    result = s - t
+    If result < 0 Then result = result + kM
+    seed = result
+    RandL = seed
 End Function
-#End If
 
 Public Function Range( _
     aValues As Variant _
@@ -426,10 +508,10 @@ Public Function Range( _
     ' dimensional array or the array elements are not
     ' primitive types.
     '
-    Dim r As Pair
+    Dim rng As Pair
     
-    r = MinMax(aValues)
-    Range = r.Second - r.First
+    rng = MinMax(aValues)
+    Range = rng.Second - rng.First
 End Function
 
 Public Function RangeOf( _
