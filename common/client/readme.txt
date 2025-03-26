@@ -4,4 +4,4 @@ OCRAppTemplate.accdb - A template to develop client applications that contains c
 and functionality.
 
 OCRCatalog.accde - a simple database demonstrating how a back-end database can be implemented to
-store OCR application data.
+store and retrieve sacnned documents.
