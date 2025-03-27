@@ -6,7 +6,7 @@
 :: mbrodskiis@gmail.com
 :: All rights reserved. Unauthorized use prohibited.
 ::
-:: Creates the application filesystem install any 
+:: Creates the application filesystem installs any 
 :: required dependencies. 
 ::
 :: Parameters:
