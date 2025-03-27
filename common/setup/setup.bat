@@ -10,7 +10,7 @@
 :: required dependencies. 
 ::
 :: Parameters:
-::    (None)
+::    %1 - Application root folder.
 ::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -50,13 +50,15 @@ SET /A sz_dependencies=2
 :: Create the application filesystem and install any
 :: required dependencies.
 ::
-:: The setup root is the parent folder of this file.
-:: All other locations are subfolders thereof.
+:: The application root is %1 or this script's 
+:: parent folder, if omitted. All other locations 
+:: are subfolders thereof.
 ::
-SET "RootFolder=%~dp0"
-SET "SetupFolder=%RootFolder%%SetupSubDir%"
+IF "%~1"=="" (SET "RootFolder=%~dp0") ELSE (SET "RootFolder=%~1")
+SET "SetupFolder=%RootFolder%\%SetupSubDir%"
 SET "Installer=%SetupFolder%\%InstallFile%"
 ECHO %Program% %Version%
+ECHO ver
 
 CALL :CREATE_FILESYSTEM "%RootFolder%" "%AppFolders%"
 
@@ -85,7 +87,9 @@ EXIT /B %ERRORLEVEL%
 ::    $2 - Comma-separated list of sub folders.
 ::
 FOR %%x in (%~2) DO (
-    SET "folder=%~1%%x"
+    SET "folder=%~1"
+    IF DEFINED folder IF NOT "!folder:~-1!"=="\" SET "folder=!folder!\"
+    SET "folder=!folder!%%x"
     CALL ECHO CREATING !folder!
     CALL MKDIR "!folder!" 
 )

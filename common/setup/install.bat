@@ -11,11 +11,11 @@
 :: application installer. 
 ::
 :: Parameters:
-::    $1 - Registry key
-::    $2 - Installer URL (without file name)
-::    $3 - Local download folder
-::    $4 - Installer file name
-::    $5 - Installer command line args.
+::    %1 - Registry key
+::    %2 - Installer URL (without file name)
+::    %3 - Local download folder
+::    %4 - Installer file name
+::    %5 - Installer command line args.
 ::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -93,7 +93,7 @@ EXIT /B %ERRORLEVEL%
 :: This is the main function for downloading files.
 ::
 ECHO DOWNLOADING %1
-CALL bitsadmin /transfer mydownloadjob /download /priority FOREGROUND %1 %2
+bitsadmin /transfer mydownloadjob /download /priority FOREGROUND %1 %2
 EXIT /B %ERRORLEVEL%
 
 :DOWNLOAD_PROXY_ON
@@ -102,7 +102,7 @@ EXIT /B %ERRORLEVEL%
 :: to enable download via proxy server.
 ::
 ECHO PROXY_ON %1
-CALL bitsadmin /setproxysettings mydownloadjob OVERRIDE %1
+bitsadmin /setproxysettings mydownloadjob OVERRIDE %1
 EXIT /B %ERRORLEVEL%
 
 :DOWNLOAD_PROXY_OFF
@@ -110,5 +110,5 @@ EXIT /B %ERRORLEVEL%
 :: This function disables the proxy server.
 ::
 ECHO PROXY_OFF
-CALL bitsadmin /setproxysettings mydownloadjob NO_PROXY
+bitsadmin /setproxysettings mydownloadjob NO_PROXY
 EXIT /B %ERRORLEVEL%
