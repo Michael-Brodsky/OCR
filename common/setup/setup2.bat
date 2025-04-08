@@ -6,7 +6,8 @@
 :: mbrodskiis@gmail.com
 :: All rights reserved. Unauthorized use prohibited.
 ::
-:: Downloads and installs any required dependencies. 
+:: Downloads and installs any required dependencies, and
+:: Extracts application files to the root folder. 
 ::
 :: Parameters:
 ::    %1 - Application root folder (optional).
@@ -20,6 +21,7 @@ SET Program=PaperShredder Setup
 SET Version=1.0
 SET SetupSubDir=setup
 SET InstallFile=install.bat
+SET AppCompressedFiles=PaperShredderAIO.zip
 
 :: Application dependencies.
 SET dependencies[0].Name="GPL Ghostscript"
@@ -53,7 +55,7 @@ SET "SetupFolder=%RootFolder%\%SetupSubDir%"
 SET "Installer=%SetupFolder%\%InstallFile%"
 ECHO %Program% %Version% 
 VER
-ECHO Setup will download install any required dependencies.
+ECHO Setup will download and install any required dependencies.
 PAUSE
 
 :: Loop through each defined dependency and, if neccessary, 
@@ -68,6 +70,14 @@ FOR /L %%i IN (0 1 %sz_dependencies%) DO  (
 	GOTO MAIN_DONE
     ) 
 )
+::
+:: Extract the application files from the compressed folder.
+::
+TAR -xf %AppCompressedFiles% -C "%RootFolder%"
+IF ERRORLEVEL 1 (GOTO MAIN_DONE)
+::
+:: Success
+::
 ECHO Setup completed successfully.
 :MAIN_DONE
 PAUSE
