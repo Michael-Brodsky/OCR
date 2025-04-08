@@ -1,1 +1,1 @@
-This folder contains PaperShredder-Tesseract setup and deployment components.
+This folder contains PaperShredder-Tesseract setup and deployment projects.
